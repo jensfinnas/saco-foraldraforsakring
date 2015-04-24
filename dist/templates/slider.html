@@ -1,0 +1,11 @@
+<div class="slider-container">
+  <div class="parent-0 pull-left">
+    <strong>{{ parents[0].label }}</strong><br/>
+    <span>{{ parents[0].input.ledigaManader }} mån.</span>
+  </div>
+  <div class="parent-1 pull-right">
+    <strong>{{ parents[1].label }}</strong><br/>
+    <span>{{ parents[1].input.ledigaManader }} mån.</span>
+  </div>
+  <slider ng-model="parents[0].input.ledigaManader" min="0" step="0.5" max="12" value="parents[0].input.ledigaManader"></slider>
+</div>
