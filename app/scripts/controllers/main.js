@@ -64,21 +64,26 @@ angular.module('sacoForaldraforsakringApp')
     	aktuellt prisbasbelopp (PBB). 
     */
     function getGA(FFI, PBB) {
+        var GA;
     	if (FFI < 0.99 * PBB) {
-    		return 0.423 * PBB;
+    		GA = 0.423 * PBB;
     	}
     	else if (FFI < 2.72 * PBB) {
-    		return 0.225 * PBB + 0.2 * FFI;
+    		GA = 0.225 * PBB + 0.2 * FFI;
     	}
     	else if (FFI < 3.11 * PBB) {
-    		return 0.770 * PBB;
+    		GA = 0.770 * PBB;
     	}
     	else if (FFI < 7.88 * PBB) {
-    		return 1.081 * PBB - 0.1 * FFI;
+    		GA = 1.081 * PBB - 0.1 * FFI;
     	}
     	else {
-    		return 0.293 * PBB;
+    		GA = 0.293 * PBB;
     	}
+        /*  Grundavdraget avrundas uppåt till närmaste 100-tal
+            http://www.skatteverket.se/download/18.18e1b10334ebe8bc8000115152/kapitel_11.pdf
+        */
+        return Math.ceil( GA / 100 ) * 100
     }
     /*	Räkna ut skatten i kronor givet en viss inkomst
     */
