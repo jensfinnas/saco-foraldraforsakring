@@ -47,8 +47,6 @@ app.factory('calculator', function () {
     function getSkatt(TI) {
         // Obs! Lön per månad här
         var GA = getGA( TI, PBB );
-        console.log("Grundavdrag:", GA);
-        console.log("Kommunalskatt:", ( TI - GA ) * KI);
 
         return ( TI - GA ) * KI +
             Math.max(0, ( TI - GA - SG1 ) * 0.2 ) +

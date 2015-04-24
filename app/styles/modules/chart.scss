@@ -1,0 +1,21 @@
+#chart {
+	
+	.selected-annotation.line {
+		stroke: red;
+	}
+
+	.max-annotation,
+	.selected-annotation {
+		display: none;
+	}
+	.max {
+		.max-annotation {
+			display: block;
+		}
+	}
+	.selected {
+		.selected-annotation {
+			display: block;
+		}
+	}
+}
