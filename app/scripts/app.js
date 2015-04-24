@@ -18,4 +18,5 @@ var app = angular
     'ui.bootstrap',
     'ui.bootstrap-slider',
     'angular-toArrayFilter',
+    'n3-line-chart',
   ]);

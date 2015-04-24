@@ -33,6 +33,9 @@ module.exports = function(config) {
       'bower_components/angular-bootstrap-slider/slider.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/angular-toArrayFilter/toArrayFilter.js',
+      'bower_components/d3/d3.js',
+      'bower_components/moment/moment.js',
+      'bower_components/n3-line-chart/build/line-chart.min.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
