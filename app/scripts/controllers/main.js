@@ -49,7 +49,7 @@ angular.module('sacoForaldraforsakringApp')
 
     $scope.modal = function (msg) {
     	var modalInstance = $modal.open({
-    		templateUrl: '/templates/modal-info.html',
+    		templateUrl: 'templates/modal-info.html',
     		controller: 'ModalInstanceCtrl',
     		size: 'sm',
     		resolve: {
@@ -85,6 +85,8 @@ angular.module('sacoForaldraforsakringApp')
     function getSkatt(TI) {
     	// Obs! Lön per månad här
     	var GA = getGA( TI, PBB );
+        console.log("Grundavdrag:", GA);
+        console.log("Kommunalskatt:", ( TI - GA ) * KI);
 
     	return ( TI - GA ) * KI +
     		Math.max(0, ( TI - GA - SG1 ) * 0.2 ) +
@@ -169,15 +171,18 @@ angular.module('sacoForaldraforsakringApp')
  	$scope.$watch("parents[1].input", calculateIncome, true);
     
  	var inkomstSpec = function(lonManad, ledigaManader, foraldralonManaderMax) {
- 		var w = lonManad;
  		var jobbManader = 12 - ledigaManader;
- 		var FP = getFP( w, PBB );
- 		var FL = getFL( w, PBB );
- 		var foraldralonManader = Math.min(foraldralonManaderMax, ledigaManader);
- 		var inkomstskatt = getSkatt( w );
- 		var JSA = getJSA( w, KI, PBB );
- 		var skatteprocentUtanJSA = inkomstskatt / w;
- 		var skatteprocentMedJSA = ( inkomstskatt - JSA ) / w;
+        var foraldralonManader = Math.min(foraldralonManaderMax, ledigaManader);
+        
+ 		var lonJobb = lonManad * jobbManader;
+        var FP = getFP( lonManad, PBB ) * ledigaManader;
+ 		var FL = getFL( lonManad, PBB ) * foraldralonManader;
+
+ 		var inkomstskatt = getSkatt( lonJobb );
+ 		var JSA = getJSA( lonJobb, KI, PBB );
+ 		var skatteprocentUtanJSA = inkomstskatt / lonJobb;
+ 		var skatteprocentMedJSA = ( inkomstskatt - JSA ) / lonJobb;
+
  		var JB = getJB(ledigaManader, JBdag, JBreserveradeManader)
  		/*	Månadslön
  			- GA
@@ -187,25 +192,37 @@ angular.module('sacoForaldraforsakringApp')
  		var inkomstSpec = {
  			'lonBrutto': {
  				label: 'Bruttolön',
- 				value: w * jobbManader,
+ 				value: lonJobb,
  				type: 'brutto',
  				order: 1
  			},
+            'inkomstskatt': {
+                label: 'Skatt på arbetsinkomst',
+                value: inkomstskatt,
+                type: 'skatt',
+                order: 1.1
+            },
+            'JSA': {
+                label: 'Jobbskatteavdrag',
+                value: JSA,
+                type: 'skatt',
+                order: 1.2
+            },
  			'lonNetto': {
  				label: 'Nettolön',
- 				value: ( w - inkomstskatt - JSA ) * jobbManader,
+ 				value: ( lonJobb - inkomstskatt - JSA ),
  				type: 'netto',
  				order: 2
  			},
  			'FPbrutto': {
  				label: 'Föräldrapenning före skatt',
- 				value: FP * ledigaManader,
+ 				value: FP,
  				type: 'brutto',
  				order: 3
  			},
  			'FPnetto': {
  				label: 'Föräldrapenning efter skatt',
- 				value: ( FP - FP * skatteprocentUtanJSA ) * ledigaManader,
+ 				value: ( FP - FP * skatteprocentUtanJSA ),
  				type: 'netto',
  				order: 4
  			},
@@ -216,13 +233,13 @@ angular.module('sacoForaldraforsakringApp')
             },
  			'FLbrutto': {
  				label: 'Föräldralön före skatt',
- 				value: FL * foraldralonManader,
+ 				value: FL,
  				type: 'brutto',
  				order: 5
  			},
  			'FLnetto': {
  				label: 'Föräldralön efter skatt',
- 				value: ( FL - FL * skatteprocentMedJSA ) * foraldralonManader,	
+ 				value: ( FL - FL * skatteprocentMedJSA ),	
  				type: 'netto',
  				order: 6
  			},
@@ -243,13 +260,13 @@ angular.module('sacoForaldraforsakringApp')
  				type: 'skattefri',
  				order: 8			
  			},
- 			'totalNetto': {
+ 			'totalBrutto': {
  				label: 'Total bruttoinkomst',
  				type: 'total',
  				value: 0,
  				order: 9
  			},
- 			'totalBrutto': {
+ 			'totalNetto': {
  				label: 'Total nettoinkomst',
  				type: 'total',
  				value: 0,
