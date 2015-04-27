@@ -1,12 +1,17 @@
 #chart {
-	
-	.selected-annotation.line {
-		stroke: red;
-	}
 
+	
+
+
+	/*	Annotations for max value and selected months are drawn, but shown only
+		when activated
+	*/
 	.max-annotation,
 	.selected-annotation {
 		display: none;
+	}
+	.selected-annotation.line {
+		stroke: red;
 	}
 	.max {
 		.max-annotation {

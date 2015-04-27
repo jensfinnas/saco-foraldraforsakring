@@ -15,7 +15,7 @@ app.factory('calculator', function () {
 
     // Jämstäldhetsbonus per dag
     var JBdag = 50;
-    var JBreserveradeManader = 4;
+    var JBreserveradeManader = 2;
 
     // Barnbidrag per månad
     var BB = 1050;
@@ -115,14 +115,34 @@ app.factory('calculator', function () {
         var jobbManader = 12 - ledigaManader;
         var foraldralonManader = Math.min(foraldralonManaderMax, ledigaManader);
         
-        var lonJobb = lonManad * jobbManader;
-        var FP = getFP( lonManad, PBB ) * ledigaManader;
-        var FL = getFL( lonManad, PBB ) * foraldralonManader;
+        // 1) Utgå från månadslön och multiplicera den med 12 för att få årslönen.
+        var _arslon = lonManad * 12;
 
-        var inkomstskatt = getSkatt( lonJobb, jobbManader );
-        var JSA = getJSA( lonJobb, jobbManader, KI, PBB );
-        var skatteprocentUtanJSA = inkomstskatt / lonJobb;
-        var skatteprocentMedJSA = ( inkomstskatt - JSA ) / lonJobb;
+        // 2-3) Dra av grundavdraget relaterat till årslönen och beräkna skatten relaterat till årslönen
+        var _inkomstskatt = getSkatt( _arslon, 12 );
+
+        // 4) Beräkna jobbskatteavdraget relaterat till årslönen
+        var _JSA = getJSA( _arslon, 12, KI, PBB );
+
+        // 5) Beräkna nettoinkomsten relaterat till årslönen
+        var _nettolon = _arslon - _inkomstskatt - _JSA;
+
+        // 6) Beräkna månadsuppgifter genom att dividera med 12
+        var lonNetto = _nettolon / 12 * jobbManader;
+        var lonBrutto = lonManad * jobbManader;
+        
+        // 7) Beräkna procentsats för skatt med och utan jobbskatteavdrag med hjälp av månadsuppgifter.
+        var skatteprocentMedJSA = ( _inkomstskatt - _JSA ) / _arslon;
+        var skatteprocentUtanJSA = ( _inkomstskatt ) / _arslon;
+
+        // 8) Beräkna föräldrapenning på månadsbasis i brutto och nettotermer.
+        var FP = getFP( lonManad, PBB ) * ledigaManader;
+        var FPNetto = FP * (1 - skatteprocentUtanJSA);
+
+        // 9) Beräkna föräldralönen på månadsbasis i brutto och nettotermer.
+        var FL = getFL( lonManad, PBB ) * foraldralonManader;
+        var FLNetto = FL * (1- skatteprocentMedJSA);
+
 
         var JB = getJB(ledigaManader, JBdag, JBreserveradeManader)
         /*  Månadslön
@@ -133,32 +153,31 @@ app.factory('calculator', function () {
         var inkomstSpec = {
             'lonBrutto': {
                 label: 'Bruttolön',
-                value: lonJobb,
+                value: lonBrutto,
                 type: 'brutto',
                 order: 1
             },
-            'inkomstskatt': {
-                label: 'Skatt på arbetsinkomst',
-                value: inkomstskatt,
-                type: 'skatt',
-                order: 1.1
-            },
-            'GA': {
-                label: 'Grundavdrag',
-                value: getGA(lonManad, jobbManader, PBB),
-                order: 1.15
-            },
             'JSA': {
-                label: 'Jobbskatteavdrag',
-                value: JSA,
+                label: 'Jobbskatteavdrag (per månad)',
+                value: _JSA / 12,
                 type: 'skatt',
                 order: 1.2
             },
             'lonNetto': {
                 label: 'Nettolön',
-                value: ( lonJobb - inkomstskatt - JSA ),
+                value: lonNetto,
                 type: 'netto',
                 order: 2
+            },
+            'skatteprocentUtanJSA': {
+                label: 'Skatteprocent utan JSA',
+                value: skatteprocentUtanJSA * 100,
+                order: 2.5
+            },
+            'skatteprocentMedJSA': {
+                label: 'Skatteprocent med JSA',
+                value: skatteprocentMedJSA * 100,
+                order: 2.4
             },
             'FPbrutto': {
                 label: 'Föräldrapenning före skatt',
@@ -168,14 +187,9 @@ app.factory('calculator', function () {
             },
             'FPnetto': {
                 label: 'Föräldrapenning efter skatt',
-                value: ( FP - FP * skatteprocentUtanJSA ),
+                value: FPNetto,
                 type: 'netto',
                 order: 4
-            },
-            'skatteprocentUtanJSA': {
-                label: 'Skatteprocent utan JSA',
-                value: skatteprocentUtanJSA * 100,
-                order: 2.5
             },
             'FLbrutto': {
                 label: 'Föräldralön före skatt',
@@ -185,14 +199,9 @@ app.factory('calculator', function () {
             },
             'FLnetto': {
                 label: 'Föräldralön efter skatt',
-                value: ( FL - FL * skatteprocentMedJSA ),   
+                value: FLNetto,   
                 type: 'netto',
                 order: 6
-            },
-            'skatteprocentMedJSA': {
-                label: 'Skatteprocent med JSA',
-                value: skatteprocentMedJSA * 100,
-                order: 2.5
             },
             'JB': {
                 label: 'Jämställdhetsbonus',

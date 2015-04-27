@@ -8,10 +8,11 @@
  * Controller of the sacoForaldraforsakringApp
  */
 angular.module('sacoForaldraforsakringApp')
-  .controller('MainCtrl', function ($scope, $modal, calculator) {
+  .controller('MainCtrl', function ($scope, $modal, $filter, calculator) {
     $scope.monthsMin = 1;
     $scope.monthsMax = 11;
-    $scope.monthInterval = 0.5;
+    $scope.monthInterval = 1;
+    var formatCurrency = $filter('currency');
 
     $scope.parents = [
     	{
@@ -70,32 +71,36 @@ angular.module('sacoForaldraforsakringApp')
  	$scope.$watch("parents[1].input", calculateIncome, true);
 
 
-    $scope.options = {
+    $scope.chartOptions = {
         series: [
+            // Lower area
             {
                 y: "totalNetto",
                 label: "Hushållets inkomst",
-                color: "#1f77b4",
+                color: "#008ea1",
                 axis: "y",
                 type: "area",
                 thickness: "1px",
-                dotSize: 2,
-                id: "total-netto"
+                dotSize: 3,
+                striped: false,
+                id: "totalNetto" // id has to be same as y
             },
+            // Upper area
             {
                 y: "FLnetto",
                 label: "Föräldralön",
-                color: "#ff7f0e",
+                color: "#E27748",
                 axis: "y",
                 type: "area",
                 thickness: "1px",
-                dotSize: 2,
-                id: "foraldralon"
+                dotSize: 3,
+                striped: true,
+                id: "FLnetto"
             },
         ],
         stacks: [{
                 axis: "y",
-                series: ["total-netto", "foraldralon"]
+                series: ["totalNetto", "FLnetto"]
         }],
         axes: {
             x: {
@@ -107,7 +112,9 @@ angular.module('sacoForaldraforsakringApp')
             },
             y: {
                 type: "linear",
-                min: 350000,
+                labelFunction: function(v) {
+                    return formatCurrency(v, '', 0);
+                },
                 ticks: 5
             }
         },
@@ -115,8 +122,14 @@ angular.module('sacoForaldraforsakringApp')
         tension: 0.7,
         tooltip: {
             mode: "scrubber",
-            formatter: function(x,y,series) {
-                return x + "-" + (12 - x) + ": " + Math.round(y);
+            formatter: function(x,y,stackTotal,series) {
+                // Tooltip for total
+                if (series.y == "totalNetto") {
+                    return 'Varav föräldralön: ' + formatCurrency(stackTotal - y, undefined, 0);
+                }
+                else if (series.y == 'FLnetto') {
+                    return 'Total inkomst: ' + formatCurrency(stackTotal, undefined, 0);
+                };
             } 
         },
         drawLegend: true,
@@ -127,28 +140,29 @@ angular.module('sacoForaldraforsakringApp')
 
 
 
+    function updateChartData() {
+        $scope.data = [];
 
-    $scope.data = [];
+        for (var m = $scope.monthsMin; m <= $scope.monthsMax; m += $scope.monthInterval) {
+            var w1 = $scope.parents[0].input.lonManad;
+            var w2 = $scope.parents[1].input.lonManad;
+            var fm1 = $scope.parents[0].input.foraldralonManader;
+            var fm2 = $scope.parents[1].input.foraldralonManader;
+            var m1 = m;
+            var m2 = 12 - m;
 
-    for (var m = $scope.monthsMin; m <= $scope.monthsMax; m += $scope.monthInterval) {
-        var w1 = $scope.parents[0].input.lonManad;
-        var w2 = $scope.parents[1].input.lonManad;
-        var fm1 = $scope.parents[0].input.foraldralonManader;
-        var fm2 = $scope.parents[1].input.foraldralonManader;
-        var m1 = m;
-        var m2 = 12 - m;
+            var spec1 = calculator.inkomstSpec(w1, m1, fm1);
+            var spec2 = calculator.inkomstSpec(w2, m2, fm2);
 
-        var spec1 = calculator.inkomstSpec(w1, m1, fm1);
-        var spec2 = calculator.inkomstSpec(w2, m2, fm2);
+            var totalNetto = spec1.totalNetto.value + spec2.totalNetto.value;
+            var FLnetto = spec1.FLnetto.value + spec2.FLnetto.value;
 
-        var totalNetto = spec1.totalNetto.value + spec2.totalNetto.value;
-        var FLnetto = spec1.FLnetto.value + spec2.FLnetto.value;
-
-        $scope.data.push({
-            x: m,
-            totalNetto: totalNetto - FLnetto,
-            FLnetto: FLnetto
-        });
+            $scope.data.push({
+                x: m,
+                totalNetto: totalNetto - FLnetto,
+                FLnetto: FLnetto
+            });
+        }
     }
     
  
@@ -161,7 +175,29 @@ angular.module('sacoForaldraforsakringApp')
     	var fm2 = $scope.parents[1].input.foraldralonManader;
 
     	$scope.parents[0].inkomstSpec = calculator.inkomstSpec(w1, m1, fm1);
-    	$scope.parents[1].inkomstSpec = calculator.inkomstSpec(w2, m2, fm2);    	
+    	$scope.parents[1].inkomstSpec = calculator.inkomstSpec(w2, m2, fm2);	
+
+        $scope.data = [];
+        for (var m = $scope.monthsMin; m <= $scope.monthsMax; m += $scope.monthInterval) {
+            var m1 = m;
+            var m2 = 12 - m;
+
+            var spec1 = calculator.inkomstSpec(w1, m1, fm1);
+            var spec2 = calculator.inkomstSpec(w2, m2, fm2);
+
+            var totalNetto = spec1.totalNetto.value + spec2.totalNetto.value;
+            var FLnetto = spec1.FLnetto.value + spec2.FLnetto.value;
+
+            $scope.data.push({
+                x: m,
+                totalNetto: totalNetto - FLnetto,
+                FLnetto: FLnetto,
+                sum: totalNetto
+            });
+        }
+        $scope.chartOptions.axes.y.min = d3.min($scope.data.map(function(d) {
+            return d.totalNetto * 0.9;
+        }));
     }
   });
 /*

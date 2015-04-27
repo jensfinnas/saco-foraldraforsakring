@@ -382,10 +382,12 @@ mod.factory('n3utils', [
           .attr({
             'class': 'max-annotation',
             'font-size': '11px',
-            'text-anchor': 'middle'
+            'text-anchor': 'middle',
+            'dy': 0,
+            'y': -7
           })
           .text(function(d) { 
-            return "Optimal fördelning: " + d.x + "-" + (12 - d.x) +"";
+            return "Optimal fördelning";
           })
         dot.append('line').attr({
           'class': 'selected-annotation line',
@@ -817,6 +819,9 @@ mod.factory('n3utils', [
           if (s.id) {
             seriesData.id = s.id;
           }
+          var stacks = options.stacks.filter(function(stack) {
+            return stack.series.indexOf(s.id) > -1;
+          });
           data.filter(function(row) {
             return row[s.y] != null;
           }).forEach(function(row) {
@@ -825,11 +830,20 @@ mod.factory('n3utils', [
               x: row[options.axes.x.key],
               y: row[s.y],
               y0: 0,
+              stackTotal: 0,
               axis: s.axis || 'y'
             };
             if (s.dotSize != null) {
               d.dotSize = s.dotSize;
             }
+            /*  Get stack total. This only works for one stack.
+                And the series id has to be the same as the y attribute.
+            */
+            if (stacks.length > 0) {
+              stacks[0].series.forEach(function(id) {
+                d.stackTotal += row[id];
+              })
+            };
             return seriesData.values.push(d);
           });
           return seriesData;
@@ -1417,7 +1431,8 @@ mod.factory('n3utils', [
           v = that.getClosestPoint(series.values, axes.xScale.invert(x));
           text = v.x + ' : ' + v.y;
           if (options.tooltip.formatter) {
-            text = options.tooltip.formatter(v.x, v.y, options.series[index]);
+            // Added stack total here
+            text = options.tooltip.formatter(v.x, v.y, v.stackTotal, options.series[index]);
           }
           right = item.select('.rightTT');
           rText = right.select('text');
@@ -1713,11 +1728,14 @@ mod.factory('n3utils', [
       */
       annotateMax: function(svg) {
         var max = 0;
-        svg.selectAll('.dot-group')
+        svg.selectAll('.dotGroup').last()
+        .selectAll('.dot-group')
         .classed('max', false)
         .filter(function(d) { 
-          var isMax = d.y > max;
-          if (isMax) max = d.y;
+          // Use stack total as measure if it is availble
+          var y = d.stackTotal > 0 ? d.stackTotal : d.y;
+          var isMax = y > max;
+          if (isMax) max = y;
           return isMax; 
         }).last().classed('max', true);
       },
