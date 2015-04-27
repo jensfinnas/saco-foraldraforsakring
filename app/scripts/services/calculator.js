@@ -20,7 +20,7 @@ app.factory('calculator', function () {
     // Barnbidrag per månad
     var BB = 1050;
 
-    function getGA(FFI, PBB) {
+    function getGA(FFI, jobbManader, PBB) {
         var GA;
         if (FFI < 0.99 * PBB) {
             GA = 0.423 * PBB;
@@ -40,13 +40,13 @@ app.factory('calculator', function () {
         /*  Grundavdraget avrundas uppåt till närmaste 100-tal
             http://www.skatteverket.se/download/18.18e1b10334ebe8bc8000115152/kapitel_11.pdf
         */
-        return Math.ceil( GA / 100 ) * 100
+        return Math.ceil( GA / 100 ) * 100 * jobbManader / 12;
     }
     /*  Räkna ut skatten i kronor givet en viss inkomst
     */
-    function getSkatt(TI) {
+    function getSkatt(TI, jobbManader) {
         // Obs! Lön per månad här
-        var GA = getGA( TI, PBB );
+        var GA = getGA( TI, jobbManader, PBB );
 
         return ( TI - GA ) * KI +
             Math.max(0, ( TI - GA - SG1 ) * 0.2 ) +
@@ -55,9 +55,9 @@ app.factory('calculator', function () {
     /*  Räkna ut jobbskatteavdraget (JSA) i kronor givet en arbetsinkomst per månad (AI),
         kommunal inkomstskatt (KI) och aktuellt prisbasbelop (PBB).
     */
-    function getJSA (AI, KI, PBB) {
+    function getJSA (AI, jobbManader, KI, PBB) {
         // Räkna ut grundavdraget
-        var GA = getGA(AI, PBB);
+        var GA = getGA(AI, jobbManader, PBB);
 
         if (AI < 0.91 * PBB) {
             return (AI - GA) * KI;
@@ -119,8 +119,8 @@ app.factory('calculator', function () {
         var FP = getFP( lonManad, PBB ) * ledigaManader;
         var FL = getFL( lonManad, PBB ) * foraldralonManader;
 
-        var inkomstskatt = getSkatt( lonJobb );
-        var JSA = getJSA( lonJobb, KI, PBB );
+        var inkomstskatt = getSkatt( lonJobb, jobbManader );
+        var JSA = getJSA( lonJobb, jobbManader, KI, PBB );
         var skatteprocentUtanJSA = inkomstskatt / lonJobb;
         var skatteprocentMedJSA = ( inkomstskatt - JSA ) / lonJobb;
 
@@ -142,6 +142,11 @@ app.factory('calculator', function () {
                 value: inkomstskatt,
                 type: 'skatt',
                 order: 1.1
+            },
+            'GA': {
+                label: 'Grundavdrag',
+                value: getGA(lonManad, jobbManader, PBB),
+                order: 1.15
             },
             'JSA': {
                 label: 'Jobbskatteavdrag',
