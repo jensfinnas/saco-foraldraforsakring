@@ -68,12 +68,17 @@ app.factory('calculator', function () {
         else if (AI < 8.08 * PBB) {
             return (1.584 * PBB + 0.111 * ( AI - 2.94 * PBB ) - GA ) * KI;
         }
+        else {
+            return ( 2.155 * PBB - GA ) * KI;
+        }
+
+        /* Så här hade vi räknat om den tänkta budgeten gått igenom och JSA börjat fasas ut
         else if (AI < 13.48 * PBB) {
             return ( 2.155 * PBB - GA ) * KI;
         }
         else {
             return Math.max( 0, 2.155 * PBB - GA ) * KI - 0.03 * ( AI - 13.84 * PBB );
-        }
+        }*/
     }
     /*  Räkna ut föräldrapenningen (FP) per månad givet en månadslön och det aktuella prisbasbeloppet (PBB).
     */
@@ -145,14 +150,10 @@ app.factory('calculator', function () {
 
 
         var JB = getJB(ledigaManader, JBdag, JBreserveradeManader)
-        /*  Månadslön
-            - GA
-            = beskattningsbar inkomrt
 
-        */
         var inkomstSpec = {
             'lonBrutto': {
-                label: 'Bruttolön',
+                label: 'Arbetsinkomst (före skatt)',
                 value: lonBrutto,
                 type: 'brutto',
                 order: 1
@@ -180,7 +181,7 @@ app.factory('calculator', function () {
                 order: 2.4
             },
             'FPbrutto': {
-                label: 'Föräldrapenning före skatt',
+                label: 'Föräldrapenning (före skatt)',
                 value: FP,
                 type: 'brutto',
                 order: 3
@@ -192,7 +193,7 @@ app.factory('calculator', function () {
                 order: 4
             },
             'FLbrutto': {
-                label: 'Föräldralön före skatt',
+                label: 'Föräldralön (före skatt)',
                 value: FL,
                 type: 'brutto',
                 order: 5
@@ -216,16 +217,16 @@ app.factory('calculator', function () {
                 order: 8            
             },
             'totalBrutto': {
-                label: 'Total bruttoinkomst',
+                label: 'Total inkomst före skatt',
                 type: 'total',
                 value: 0,
                 order: 9
             },
             'totalNetto': {
-                label: 'Total nettoinkomst',
+                label: 'Total inkomst efter skatt',
                 type: 'total',
                 value: 0,
-                order: 10
+                order: 10, 
             }
         }
         angular.forEach(inkomstSpec, function(d, key) {

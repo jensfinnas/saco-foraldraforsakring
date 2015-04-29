@@ -1,6 +1,6 @@
-app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, data) {
-  $scope.msg = data.msg;
-  $scope.close = function () {
-    $modalInstance.close();
-  };
+app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, params) {
+	$scope.params = params;
+	$scope.close = function () {
+		$modalInstance.close();
+	};
 });

@@ -1,7 +1,14 @@
-.slider-container {
-
-	.slider {
+month-slider {
+	display: block;
+	
+	.slider.slider-horizontal {
 		clear: both;
 		width: 100%;
+	}
+	.icon {
+		width: 30px;
+	}
+	.tooltip {
+		display: none;
 	}
 }

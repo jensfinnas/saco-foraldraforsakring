@@ -23,9 +23,7 @@
 
     <!-- Add your site or application content here -->
 
-    <div class="container">
     <div ng-include="'views/main.html'" ng-controller="MainCtrl"></div>
-    </div>
 
 
 
@@ -61,19 +59,23 @@
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/n3-line-chart/build/line-chart.min.js"></script>
     <!-- endbower -->
-    <!-- endbuild -->
+    <script src="/bower_components/angular-i18n/angular-locale_se-se.js"></script>    <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="/bower_components/angular-i18n/angular-locale_se-se.js"></script>       
+       
         <script src="scripts/app.js"></script>
         <script src="scripts/line-chart.js"></script>
         
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/modalInstance.js"></script>
 
+        <script src="scripts/directives/incomeSpec.js"></script>
         <script src="scripts/directives/slider.js"></script>
 
+        <script src="scripts/filters/capitalize.js"></script>
+
         <script src="scripts/services/calculator.js"></script>
+        <script src="scripts/services/chart.js"></script>
         <!-- endbuild -->
 </body>
 </html>

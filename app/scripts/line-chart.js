@@ -6,7 +6,7 @@ Copyright (c) 2015 n3-charts
  */
 d3.selection.prototype.last = function() {
   var last = this.size() - 1;
-  return d3.select(this[0][last]);
+  return last >= 0 ? d3.select(this[0][last]) : [];
 };
 
 var directive, m, mod, old_m,
@@ -63,6 +63,11 @@ directive('linechart', [
       scope.update = function(dimensions) {
         var axes, columnWidth, dataPerSeries, fn, handlers, isThumbnail, options, svg;
         options = _u.sanitizeOptions(scope.options, attrs.mode);
+        /*  Fetch dimensions from options
+        */
+        if (options.dimensions) {
+          angular.extend(dimensions, options.dimensions);
+        } 
         handlers = angular.extend(initialHandlers, _u.getTooltipHandlers(options));
         dataPerSeries = _u.getDataPerSeries(scope.data, options);
         isThumbnail = attrs.mode === 'thumbnail';
@@ -98,8 +103,11 @@ directive('linechart', [
         if (options.drawLegend) {
           _u.drawLegend(svg, options.series, dimensions, handlers);
         }
-        _u.annotateMax(svg);
-        _u.annotateSelectedX(svg, scope.selected);
+
+        if (dataPerSeries.length) {
+          _u.annotateMax(svg);
+          _u.annotateSelectedX(svg, scope.selected);
+        }
         
         if (options.tooltip.mode === 'scrubber') {
           return _u.createGlass(svg, dimensions, handlers, axes, dataPerSeries, options, columnWidth);
@@ -387,7 +395,7 @@ mod.factory('n3utils', [
             'y': -7
           })
           .text(function(d) { 
-            return "Optimal fördelning";
+            return "Ert max";
           })
         dot.append('line').attr({
           'class': 'selected-annotation line',
@@ -688,7 +696,7 @@ mod.factory('n3utils', [
       getDefaultMargins: function() {
         return {
           top: 20,
-          right: 50,
+          right: 10,
           bottom: 60,
           left: 50
         };
