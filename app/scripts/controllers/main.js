@@ -104,7 +104,6 @@ angular.module('sacoForaldraforsakringApp')
     $scope.chartOptions = chart.options;
     $scope.data = [];
 
-
     function updateFamilyIncome() {
         if ($scope.forms.userInput.$valid) {
             var m0 = $scope.parents[0].input.ledigaManader;
@@ -141,7 +140,7 @@ angular.module('sacoForaldraforsakringApp')
                 var spec1 = calculator.inkomstSpec(w1, m1, fm1);
 
                 var totalNetto = spec0.totalNetto.value + spec1.totalNetto.value;
-                var FLnetto = spec1.FLnetto.value + spec1.FLnetto.value;
+                var FLnetto = spec0.FLnetto.value + spec1.FLnetto.value;
 
                 $scope.data.push({
                     m0: m0,

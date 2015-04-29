@@ -51,7 +51,7 @@
 </div>
 
 <!-- RESULT CARD -->
-<div class="card" ng-show="forms.userInput.$valid">
+<div class="card"> <!-- ng-show="forms.userInput.$valid">-->
   <h3>Så här stor blir er inkomst första året (efter skatt)</h3>
   <table class="table">
     <tr>
@@ -73,7 +73,8 @@
       </td>
     </tr>
   </table>
-  <linechart id="chart" selected="parents[0].input.ledigaManader" data="data" options="chartOptions" mode="" width="" height="200"></linechart>
+  
+  <linechart id="chart" highlight="parents[0].input.ledigaManader" data="data" options="chartOptions" mode="" width="" height="200"></linechart>
   <month-slider style="padding-left:{{chartOptions.dimensions.left}}px;padding-right:{{chartOptions.dimensions.right}}px;"></month-slider>
 </div>
 

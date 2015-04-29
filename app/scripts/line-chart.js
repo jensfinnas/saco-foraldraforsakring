@@ -135,7 +135,7 @@ directive('linechart', [
       scope: {
         data: '=',
         options: '=',
-        selected: '='
+        selected: '=highlight',
       },
       template: '<div></div>',
       link: link
