@@ -10,7 +10,7 @@ app.factory('calculator', function () {
     var KI = .3199;
 
     // Skiktgränser för statlig inkomstskatt
-    var SG1 = 421800;
+    var SG1 = 430200;
     var SG2 = 616100;
 
     // Jämstäldhetsbonus per dag
