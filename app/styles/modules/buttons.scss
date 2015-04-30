@@ -1,0 +1,9 @@
+.btn-saco,
+.btn-saco:active,
+.btn-saco:focus{
+	background-color: $theme-color;
+	color: #fff !important;
+}
+.btn-saco:hover {
+	background-color: darken($theme-color, 10%);	
+}

@@ -19,4 +19,5 @@ var app = angular
     'ui.bootstrap-slider',
     'angular-toArrayFilter',
     'n3-line-chart',
+    'duScroll',
   ]);

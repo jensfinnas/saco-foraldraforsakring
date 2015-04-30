@@ -1,6 +1,20 @@
 app.factory('chart', function ($filter) {
     var formatCurrency = $filter('currency');
     var service = {};
+    var d3locale = d3.locale({
+      "decimal": ",",
+      "thousands": "\xa0",
+      "grouping": [3],
+      "currency": ["", " kr"],
+      "dateTime": "%A %e %B %Y kl. %X",
+      "date": "%d.%m.%Y",
+      "time": "%H:%M:%S",
+      "periods": ["AM", "PM"],
+      "days": ["måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag", "söndag"],
+      "shortDays": ["må", "ti", "ons", "to", "fre", "lö", "sö"],
+      "months": ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"],
+      "shortMonths": ["jan", "feb", "mars", "apr", "maj", "jun", "jul", "aug", "sept", "okt", "nov", "dec"]
+    });
 
     service.options = {
         series: [
@@ -37,14 +51,14 @@ app.factory('chart', function ($filter) {
             x: {
                 type: "linear",
                 labelFunction: function (v) {
-                    return v + "-" + ( 12 - v ); 
+                    return "";//v + "+" + ( 12 - v ); 
                 },
                 key: "x"
             },
             y: {
                 type: "linear",
-                labelFunction: function(v) {
-                    return formatCurrency(v, '', 0);
+                labelFunction: function(value) {
+                    return "";d3locale.numberFormat(".2s")(value);
                 },
                 ticks: 5
             }
@@ -52,8 +66,8 @@ app.factory('chart', function ($filter) {
         lineMode: "linear",
         tension: 0.7,
         dimensions: {
-            right: 10,
-            left: 50
+            right: 5,
+            left: 5
         },
         tooltip: {
             mode: "scrubber",

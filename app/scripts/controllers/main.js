@@ -8,7 +8,7 @@
  * Controller of the sacoForaldraforsakringApp
  */
 angular.module('sacoForaldraforsakringApp')
-  .controller('MainCtrl', function ($scope, $modal, $filter, calculator, chart) {
+  .controller('MainCtrl', function ($scope, $modal, $filter, $timeout, calculator, chart) {
     $scope.monthsMin = 1;
     $scope.monthsMax = 11;
     $scope.monthInterval = 1;
@@ -19,15 +19,15 @@ angular.module('sacoForaldraforsakringApp')
     $scope.parents = [
     	{
     		input: {
-    			lonManad: null,
+    			lonManad: 24000,
     			ledigaManader: 6,
     			foraldralonManader: 6
     		}
     	},
     	{
     		input: {
-    			lonManad: null,
-    			foraldralonManader: 6
+    			lonManad: 48000,
+    			foraldralonManader: 0
     		}
     	}
     ];
@@ -35,6 +35,22 @@ angular.module('sacoForaldraforsakringApp')
     $scope.max = {
         ledigaManader: [],
         totalNetto: 0
+    }
+
+    $scope.showResults = false;
+    $scope.validate = function() {
+        if ($scope.forms.userInput.$invalid) {
+            $scope.showResults = false;
+        }
+        else {
+            $scope.showResults = true;
+            /*  Chart renders incorrecly (wrong width) when container is hidden.
+                We therefore force a redraw after card has been rendered
+            */
+            $timeout(function() {
+                $scope.$broadcast('redraw-chart');
+            })
+        }  
     }
     /*	
     */
@@ -69,10 +85,10 @@ angular.module('sacoForaldraforsakringApp')
     $scope.$watch('settings.hetero', function(hetero) {
     	if (hetero) {
     		$scope.parents[0].icon = 'images/woman.png';
-            $scope.parents[0].label = 'kvinnan';
+            $scope.parents[0].label = 'mamman';
 
             $scope.parents[1].icon = 'images/man.png';
-            $scope.parents[1].label = 'mannen';
+            $scope.parents[1].label = 'pappan';
     	}
     	else {
             $scope.parents[0].icon = 'images/woman.png';

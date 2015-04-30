@@ -1,24 +1,23 @@
 <!-- Essential report: For  -->
-<h3>Så här räknar vi</h3>
 <div ng-hide="mode=='full'">
-  <h4>{{ parents[0].label | capitalize }}</h4>
-  <table class="table">
+  <h3>{{ parents[0].label | capitalize }}</h3>
+  <table class="table income-spec">
     <tr ng-repeat="key in rows">
       <td>{{ parents[0].inkomstSpec[key].label }}</td>
       <td class="text-right">{{ parents[0].inkomstSpec[key].value | currency:'kr': 0 }}</td>
     </tr>
   </table>
 
-  <h4>{{ parents[1].label | capitalize }}</h4>
-  <table class="table">
+  <h3>{{ parents[1].label | capitalize }}</h3>
+  <table class="table income-spec">
     <tr ng-repeat="key in rows">
       <td>{{ parents[1].inkomstSpec[key].label }}</td>
       <td class="text-right">{{ parents[1].inkomstSpec[key].value | currency:'kr': 0 }}</td>
     </tr>
   </table>
 
-  <h4>Hushållet sammanräknat</h4>
-  <table class="table">
+  <h3>Hushållet sammanräknat</h3>
+  <table class="table income-spec">
     <tr>
       <td>Inkomster för {{ parents[0].label }}</td>
       <td class="text-right">{{ parents[0].inkomstSpec.totalNetto.value | currency:'kr': 0 }}</td>
@@ -38,7 +37,7 @@
 <div class="row" ng-show="mode=='full'">
   <div class="col-sm-6">
     <h3>Inkomst för {{ parents[0].label }}</h3>
-    <table class="table">
+    <table class="table income-spec">
       <tr ng-repeat="row in parents[0].inkomstSpec | toArray | orderBy: 'order'">
         <td>{{ row.label }}</td>
         <td class="text-right">{{ row.value | currency:'kr':0 }}</td>
@@ -47,7 +46,7 @@
   </div>
   <div class="col-sm-6">
     <h3>Inkomst för {{ parents[1].label }}</h3>
-    <table class="table">
+    <table class="table income-spec">
       <tr ng-repeat="row in parents[1].inkomstSpec | toArray | orderBy: 'order'">
         <td>{{ row.label }}</td>
         <td class="text-right">{{ row.value | currency:'kr':0 }}</td>

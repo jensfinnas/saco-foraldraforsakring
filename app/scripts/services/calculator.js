@@ -217,13 +217,13 @@ app.factory('calculator', function () {
                 order: 8            
             },
             'totalBrutto': {
-                label: 'Total inkomst före skatt',
+                label: 'Inkomst före skatt',
                 type: 'total',
                 value: 0,
                 order: 9
             },
             'totalNetto': {
-                label: 'Total inkomst efter skatt',
+                label: 'Inkomst efter skatt',
                 type: 'total',
                 value: 0,
                 order: 10, 

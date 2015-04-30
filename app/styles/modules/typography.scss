@@ -1,12 +1,39 @@
+@font-face {
+  font-family: 'BerlingNovaDisplayPro';
+  src: url('/Content/Fonts/2C5E3B_0_0.eot');
+  src: url('/Content/Fonts/2C5E3B_0_0.eot?#iefix') format('embedded-opentype'), url('/Content/Fonts/2C5E3B_0_0.woff2') format('woff2'), url('/Content/Fonts/2C5E3B_0_0.woff') format('woff'), url('/Content/Fonts/2C5E3B_0_0.ttf') format('truetype');
+}
+body {
+  font-family: "proxima-nova", Arial, sans-serif;
+  font-weight: 300;
+  color: #212424;
+}
 
+h1,h2,h3,h4 {
+    line-height: 1.3;
+}
 h3 {
-	font-size: 18px;
+  font-size: 20px;
+  margin-bottom: 15px;
 }
 h4 {
 	font-size: 15px;
 }
 
+svg {
+	text {
+  		font-family: "proxima-nova", Arial, sans-serif;
+  		font-weight: 400;
+  		font-size: 12px;
+  	}
+}
+
+/*	Use this class for links that render modal popups
+*/
 .show-info {
-	border-bottom: 2px dotted;
+	border-bottom: 1px dotted;
+  cursor: pointer;
+  border-color: $theme-color;
+  color: $theme-color;
 	cursor: pointer;
 }

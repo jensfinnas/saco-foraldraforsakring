@@ -1,14 +1,17 @@
+<div id="gender-version" ng-click="settings.hetero=!settings.hetero">
+  <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+  <span ng-show="settings.hetero"> Lite mindre heteronormativitet, tack</span>
+  <span ng-show="!settings.hetero"> Tillbaka till mamma-pappa-läge</span>
+</div>
+
 <div class="card">
   
   <!-- Choose mode -->
-  <div id="gender-version">
-    <a href ng-click="settings.hetero=false" ng-show="settings.hetero">> Gör den här appen lite mindre heteronormativ</a>
-    <a href ng-click="settings.hetero=true" ng-show="!settings.hetero">> Tillbaka till mamma-pappa-läge</a>
-  </div>
+  
 
   <!-- User input card -->
-  <form name="forms.userInput" novalidate>
-    <h3>Vad har ni för månadslön (före skatt?)</h3>
+  <form class="user-input" name="forms.userInput" novalidate>
+    <h3>Vad har ni för månadslön före skatt?</h3>
     <div class="form-group">
       <label for="wage-parent-0">{{ parents[0].label | capitalize }}</label>
       <input type="number" id="wage-parent-0" class="form-control"
@@ -22,7 +25,7 @@
       <input type="number" id="wage-parent-1" class="form-control"
         ng-model="parents[1].input.lonManad"
         ng-model-options="{ updateOn: 'blur' }"
-        placeholder="Lön för {{ parents[0].label }}"
+        placeholder="Lön för {{ parents[1].label }}"
         required>
     </div>
 
@@ -30,6 +33,7 @@
     <div class="form-group">
       <label for="foraldralon-0">{{ parents[0].label | capitalize }}</label>
       <select class="form-control" ng-model="parents[0].input.foraldralonManader">
+        <option value="10">10 månader</option>
         <option value="6">6 månader</option>
         <option value="3">3 månader</option>
         <option value="0">0 månader</option>
@@ -39,43 +43,48 @@
     <div class="form-group">
       <label for="foraldralon-1">{{ parents[1].label | capitalize }}</label>
       <select class="form-control" ng-model="parents[1].input.foraldralonManader">
+        <option value="10">10 månader</option>
         <option value="6">6 månader</option>
         <option value="3">3 månader</option>
         <option value="0">0 månader</option>
       </select>
     </div>
 
-    <h3>Hur vill vi fördela de lediga månaderna de första året?</h3>
+    <h3>Hur vill ni fördela föräldraledigheten under det första året?</h3>
     <month-slider></month-slider>
+
+    <button class="btn btn-saco btn-lg btn-nav" ng-click="validate()" slide-to-next slide-delay="300">Hur mycket får ni ut?</button>
   </form>
 </div>
 
 <!-- RESULT CARD -->
-<div class="card"> <!-- ng-show="forms.userInput.$valid">-->
-  <h3>Så här stor blir er inkomst första året (efter skatt)</h3>
-  <table class="table">
+<div class="card" ng-show="showResults">
+  <h2>Så här stor blir er inkomst första året</h2>
+  <table class="table income-spec">
     <tr>
-      <td>Med fördelningen {{parents[0].input.ledigaManader}}-{{parents[1].input.ledigaManader}}:</td>
+      <td>Med fördelningen {{parents[0].input.ledigaManader}}+{{parents[1].input.ledigaManader}} månader</td>
       <td class="text-right">{{ parents[0].inkomstSpec.totalNetto.value + parents[1].inkomstSpec.totalNetto.value | currency:'kr':0 }}</td>
     </tr>
     <tr>
-      <td>Ni maximerar er inkomst med fördelningen {{max.ledigaManader[0]}}-{{max.ledigaManader[1]}}:</td>
+      <td>Ni maximerar er inkomst med fördelningen {{max.ledigaManader[0]}}+{{max.ledigaManader[1]}} månader</td>
       <td class="text-right">{{ max.totalNetto | currency:'kr':0 }}</td>
     </tr>
     <tr>
-      <td>Skillnad:</td>
+      <td>Skillnad</td>
       <td class="text-right">{{ parents[0].inkomstSpec.totalNetto.value + parents[1].inkomstSpec.totalNetto.value - max.totalNetto | currency:'kr':0 }}</td>
     </tr> 
-    <tr>
-      <td></td>
-      <td class="text-right">
-        <button class="btn btn-default" ng-click="modal('templates/modal-income-spec.html', { parents: parents, size: 'lg' })">Visa detaljer</button>
-      </td>
-    </tr>
   </table>
-  
-  <linechart id="chart" highlight="parents[0].input.ledigaManader" data="data" options="chartOptions" mode="" width="" height="200"></linechart>
+  <button class="btn btn-default pull-right" ng-click="modal('templates/modal-income-spec.html', { parents: parents, size: 'lg' })">
+    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+    Så här räknar vi
+  </button>
+
+  <linechart id="chart" highlight="parents[0].input.ledigaManader" data="data" options="chartOptions" forceredraw="forceredraw" mode="" width="" height="200"></linechart>
   <month-slider style="padding-left:{{chartOptions.dimensions.left}}px;padding-right:{{chartOptions.dimensions.right}}px;"></month-slider>
+
+  <button class="btn btn-saco btn-lg btn-nav" slide-to-next slide-delay="300">
+    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span> Tillbaka
+  </button>
 </div>
 
 <hr>

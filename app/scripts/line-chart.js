@@ -8,6 +8,9 @@ d3.selection.prototype.last = function() {
   var last = this.size() - 1;
   return last >= 0 ? d3.select(this[0][last]) : [];
 };
+d3.selection.prototype.first = function() {
+  return d3.select(this[0][0]);
+};
 
 var directive, m, mod, old_m,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
@@ -106,6 +109,7 @@ directive('linechart', [
 
         if (dataPerSeries.length) {
           _u.annotateMax(svg);
+          _u.addClassToFirstAndLast(svg);
           _u.annotateSelectedX(svg, scope.selected);
         }
         
@@ -124,6 +128,7 @@ directive('linechart', [
       };
       $window.addEventListener('resize', window_resize);
       scope.$watch('data', scope.redraw, true);
+      scope.$on('redraw-chart', scope.redraw)
       scope.$watch('selected', scope.updateWithoutRedraw);
       return scope.$watch('options', (function() {
         return scope.update(dim);
@@ -478,7 +483,7 @@ mod.factory('n3utils', [
         var d, item, items, left, legend, right, that, _ref;
         that = this;
         legend = svg.append('g').attr('class', 'legend');
-        d = 16;
+        d = 8;
         svg.select('defs').append('svg:clipPath').attr('id', 'legend-clip').append('circle').attr('r', d / 2);
         item = legend.selectAll('.legendItem').data(series);
         items = item.enter().append('g').attr({
@@ -1755,6 +1760,16 @@ mod.factory('n3utils', [
           return d.x == xValue;
         })
         .classed('selected', true);
+      },
+
+      addClassToFirstAndLast: function(svg) {
+        svg.selectAll('.dotGroup').last()
+          .selectAll('.dot-group').last()
+          .classed('last', true);
+
+        svg.selectAll('.dotGroup').last()
+          .selectAll('.dot-group').first()
+          .classed('first', true);
       }
     };
   }
