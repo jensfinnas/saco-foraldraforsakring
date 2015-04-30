@@ -23,7 +23,7 @@
 
     <!-- Add your site or application content here -->
 
-    <div ng-include="'views/main.html'" ng-controller="MainCtrl" ng-on-height-change="sendHeight()"></div>
+    <div ng-include="'views/main.html'" ng-controller="MainCtrl" ng-on-height-change="sendHeight"></div>
 
 
 
@@ -57,7 +57,7 @@
     <script src="bower_components/angular-toArrayFilter/toArrayFilter.js"></script>
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/moment/moment.js"></script>
-    <script src="bower_components/angular-scroll/angular-scroll.js"></script>
+    <script src="bower_components/pym.js/dist/pym.js"></script>
     <!-- endbower -->
 <!-- endbuild -->
         <script type="text/javascript" src="//use.typekit.net/zxg8sjd.js"></script>
@@ -74,12 +74,12 @@
         <script src="scripts/directives/incomeSpec.js"></script>
         <script src="scripts/directives/onHeightChange.js"></script>
         <script src="scripts/directives/slider.js"></script>
-        <script src="scripts/directives/slideToNext.js"></script>
 
         <script src="scripts/filters/capitalize.js"></script>
 
         <script src="scripts/services/calculator.js"></script>
         <script src="scripts/services/chart.js"></script>
+        <script src="scripts/services/pym.js"></script>
         <!-- endbuild -->
 </body>
 </html>

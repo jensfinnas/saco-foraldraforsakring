@@ -1,7 +1,7 @@
-/*	
+/*  Watches height changes on a given element and executes a given callback.
+    Example: <div ng-on-height-change="callbackFn"></div>	
 */
 app.directive( 'ngOnHeightChange', function() {
-
     return {
     	restrict: 'A',
     	scope: {
@@ -11,8 +11,7 @@ app.directive( 'ngOnHeightChange', function() {
             scope.$watch( function() {
                 return elem.height();
             }, function(newVal) {
-            	console.log(scope.callback);
-            	console.log("height changed!", newVal)
+            	scope.callback();
             });
         }
     }

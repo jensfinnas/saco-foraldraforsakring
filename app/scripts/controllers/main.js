@@ -8,7 +8,7 @@
  * Controller of the sacoForaldraforsakringApp
  */
 angular.module('sacoForaldraforsakringApp')
-  .controller('MainCtrl', function ($scope, $modal, $filter, $timeout, calculator, chart) {
+  .controller('MainCtrl', function ($scope, $modal, $filter, $timeout, $location, $anchorScroll, calculator, chart, pym) {
     $scope.monthsMin = 1;
     $scope.monthsMax = 11;
     $scope.monthInterval = 1;
@@ -115,7 +115,17 @@ angular.module('sacoForaldraforsakringApp')
 
     
     $scope.sendHeight = function() {
-        console.log("send height!");
+        pym.sendHeight();
+    }
+
+    /*  Was not able to get the animate scroll directives to work on an iframe
+        with variable height. Un-animated anchor scrolling works though.
+    */
+    $scope.scrollToAnchor = function(id) {
+        $timeout(function() {
+            $location.hash(id);
+            $anchorScroll();
+        }, 100);
     }
 
 

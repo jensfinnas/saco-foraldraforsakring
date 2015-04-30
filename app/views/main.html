@@ -2,9 +2,9 @@
   <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
   <span ng-show="settings.hetero"> Lite mindre heteronormativitet, tack</span>
   <span ng-show="!settings.hetero"> Tillbaka till mamma-pappa-läge</span>
-</div>
 
-<div class="card">
+</div>
+<div class="card" id="user-input-card">
   
   <!-- Choose mode -->
   
@@ -63,12 +63,12 @@
     <h3>Hur vill ni fördela föräldraledigheten under det första året?</h3>
     <month-slider></month-slider>
 
-    <button class="btn btn-saco btn-lg btn-nav" ng-click="validate()" slide-to-next slide-delay="300">Hur mycket får ni ut?</button>
+    <button class="btn btn-saco btn-lg btn-nav" ng-click="validate();slideTo('result-card');">Hur mycket får ni ut?</button>
   </form>
 </div>
 
 <!-- RESULT CARD -->
-<div class="card" ng-show="showResults">
+<div class="card" id="result-card" ng-show="showResults">
   <h2>Så här stor blir er inkomst första året</h2>
   <table class="table income-spec">
     <tr>
@@ -92,13 +92,12 @@
   <linechart id="chart" highlight="parents[0].input.ledigaManader" data="data" options="chartOptions" forceredraw="forceredraw" mode="" width="" height="200"></linechart>
   <month-slider style="padding-left:{{chartOptions.dimensions.left}}px;padding-right:{{chartOptions.dimensions.right}}px;"></month-slider>
 
-  <button class="btn btn-saco btn-lg btn-nav" slide-to-next slide-delay="300">
+  <button class="btn btn-saco btn-lg btn-nav" ng-click="slideTo('user-input-card')">
     <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span> Tillbaka
   </button>
 </div>
 
-<hr>
-<income-spec parents="parents" mode="full" ng-show="showResults"></income-spec>
+<!--<income-spec parents="parents" mode="full" ng-show="showResults"></income-spec>-->
 
 
 
