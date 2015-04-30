@@ -142,11 +142,11 @@ app.factory('calculator', function () {
 
         // 8) Beräkna föräldrapenning på månadsbasis i brutto och nettotermer.
         var FP = getFP( lonManad, PBB ) * ledigaManader;
-        var FPNetto = FP * (1 - skatteprocentUtanJSA);
+        var FPNetto = FP * 0.7;//(1 - skatteprocentUtanJSA);
 
         // 9) Beräkna föräldralönen på månadsbasis i brutto och nettotermer.
         var FL = getFL( lonManad, PBB ) * foraldralonManader;
-        var FLNetto = FL * (1- skatteprocentMedJSA);
+        var FLNetto = FL * 0.7; //* (1- skatteprocentMedJSA);
 
 
         var JB = getJB(ledigaManader, JBdag, JBreserveradeManader)
@@ -173,11 +173,13 @@ app.factory('calculator', function () {
             'skatteprocentUtanJSA': {
                 label: 'Skatteprocent utan JSA',
                 value: skatteprocentUtanJSA * 100,
+                type: 'skatt',
                 order: 2.5
             },
             'skatteprocentMedJSA': {
                 label: 'Skatteprocent med JSA',
                 value: skatteprocentMedJSA * 100,
+                type: 'skatt',
                 order: 2.4
             },
             'FPbrutto': {
