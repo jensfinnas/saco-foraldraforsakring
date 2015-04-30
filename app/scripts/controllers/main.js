@@ -44,6 +44,7 @@ angular.module('sacoForaldraforsakringApp')
         }
         else {
             $scope.showResults = true;
+            $scope.scrollToAnchor('result-card');
             /*  Chart renders incorrecly (wrong width) when container is hidden.
                 We therefore force a redraw after card has been rendered
             */

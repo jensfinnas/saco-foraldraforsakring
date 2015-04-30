@@ -63,7 +63,7 @@
     <h3>Hur vill ni fördela föräldraledigheten under det första året?</h3>
     <month-slider></month-slider>
 
-    <button class="btn btn-saco btn-lg btn-nav" ng-click="validate();slideTo('result-card');">Hur mycket får ni ut?</button>
+    <button class="btn btn-saco btn-lg btn-nav" ng-click="validate();">Hur mycket får ni ut?</button>
   </form>
 </div>
 
@@ -92,7 +92,7 @@
   <linechart id="chart" highlight="parents[0].input.ledigaManader" data="data" options="chartOptions" forceredraw="forceredraw" mode="" width="" height="200"></linechart>
   <month-slider style="padding-left:{{chartOptions.dimensions.left}}px;padding-right:{{chartOptions.dimensions.right}}px;"></month-slider>
 
-  <button class="btn btn-saco btn-lg btn-nav" ng-click="slideTo('user-input-card')">
+  <button class="btn btn-saco btn-lg btn-nav" ng-click="scrollToAnchor('user-input-card')">
     <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span> Tillbaka
   </button>
 </div>
