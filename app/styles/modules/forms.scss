@@ -1,0 +1,11 @@
+$error-color	:	maroon;
+
+.error-message {
+	color: $error-color;
+  	padding: 5px;
+}
+input.ng-invalid.ng-dirty {
+	color: $error-color;
+	border-color: $error-color;
+
+}

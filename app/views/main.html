@@ -14,19 +14,29 @@
     <h3>Vad har ni för månadslön före skatt?</h3>
     <div class="form-group">
       <label for="wage-parent-0">{{ parents[0].label | capitalize }}</label>
-      <input type="number" id="wage-parent-0" class="form-control"
+      <input type="number"
+        id="wage-parent-0"
+        name="w0"
+        class="form-control"
         ng-model="parents[0].input.lonManad"
         ng-model-options="{ updateOn: 'blur' }"
         placeholder="Lön för {{ parents[0].label }}"
         required>
+      <div class="error-message"
+        ng-show="forms.userInput.w0.$invalid&&forms.userInput.w0.$dirty"role="alert">Ange en månadslön i siffror</div>
     </div>
     <div class="form-group">
       <label for="wage-parent-1">{{ parents[1].label | capitalize }}</label>
-      <input type="number" id="wage-parent-1" class="form-control"
+      <input type="number"
+        id="wage-parent-1"
+        name="w1"
+        class="form-control"
         ng-model="parents[1].input.lonManad"
         ng-model-options="{ updateOn: 'blur' }"
         placeholder="Lön för {{ parents[1].label }}"
         required>
+      <div class="error-message"
+        ng-show="forms.userInput.w1.$invalid&&forms.userInput.w1.$dirty"role="alert">Ange en månadslön i siffror</div>
     </div>
 
     <h3>I hur många månader får ni <span class="show-info" ng-click="modal('templates/modal-info.html', {'msg': 'Här kommer en förklaring'})" tooltip="Vad är föräldralön?">föräldralön</span>?</h3>
