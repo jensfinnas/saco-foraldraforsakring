@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="sv">
   <head>
     <meta charset="utf-8">
     <title></title>
@@ -23,7 +23,7 @@
 
     <!-- Add your site or application content here -->
 
-    <div ng-include="'views/main.html'" ng-controller="MainCtrl"></div>
+    <div ng-include="'views/main.html'" ng-controller="MainCtrl" ng-on-height-change="sendHeight()"></div>
 
 
 
@@ -72,6 +72,7 @@
         <script src="scripts/controllers/modalInstance.js"></script>
 
         <script src="scripts/directives/incomeSpec.js"></script>
+        <script src="scripts/directives/onHeightChange.js"></script>
         <script src="scripts/directives/slider.js"></script>
         <script src="scripts/directives/slideToNext.js"></script>
 

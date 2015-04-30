@@ -19,15 +19,15 @@ angular.module('sacoForaldraforsakringApp')
     $scope.parents = [
     	{
     		input: {
-    			lonManad: 24000,
+    			lonManad: null,
     			ledigaManader: 6,
     			foraldralonManader: 6
     		}
     	},
     	{
     		input: {
-    			lonManad: 48000,
-    			foraldralonManader: 0
+    			lonManad: null,
+    			foraldralonManader: 6
     		}
     	}
     ];
@@ -114,7 +114,9 @@ angular.module('sacoForaldraforsakringApp')
     };
 
     
-
+    $scope.sendHeight = function() {
+        console.log("send height!");
+    }
 
 
     $scope.chartOptions = chart.options;
