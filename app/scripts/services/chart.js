@@ -20,7 +20,7 @@ app.factory('chart', function ($filter) {
         series: [
             // Lower area
             {
-                y: "totalNetto",
+                y: "disponibelInkomst",
                 label: "Hushållets inkomst",
                 color: "#008ea1",
                 axis: "y",
@@ -28,7 +28,7 @@ app.factory('chart', function ($filter) {
                 thickness: "1px",
                 dotSize: 3,
                 striped: false,
-                id: "totalNetto" // id has to be same as y
+                id: "disponibelInkomst" // id has to be same as y
             },
             // Upper area
             {
@@ -45,7 +45,7 @@ app.factory('chart', function ($filter) {
         ],
         stacks: [{
                 axis: "y",
-                series: ["totalNetto", "FLnetto"]
+                series: ["disponibelInkomst", "FLnetto"]
         }],
         axes: {
             x: {
@@ -73,7 +73,7 @@ app.factory('chart', function ($filter) {
             mode: "scrubber",
             formatter: function(x,y,stackTotal,series) {
                 // Tooltip for total
-                if (series.y == "totalNetto") {
+                if (series.y == "disponibelInkomst") {
                     return 'Varav föräldralön: ' + formatCurrency(stackTotal - y, undefined, 0);
                 }
                 else if (series.y == 'FLnetto') {

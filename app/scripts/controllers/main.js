@@ -34,7 +34,7 @@ angular.module('sacoForaldraforsakringApp')
 
     $scope.max = {
         ledigaManader: [],
-        totalNetto: 0
+        disponibelInkomst: 0
     }
 
     $scope.showResults = false;
@@ -146,7 +146,7 @@ angular.module('sacoForaldraforsakringApp')
     }  
     function updateChartAxis() {
         $scope.chartOptions.axes.y.min = d3.min($scope.data.map(function(d) {
-            return d.totalNetto * 0.9;
+            return d.disponibelInkomst * 0.9;
         }));
     }
  
@@ -159,7 +159,7 @@ angular.module('sacoForaldraforsakringApp')
 
             // Nollställ data och max-inkomst
             $scope.data = [];
-            $scope.max.totalNetto = 0;
+            $scope.max.disponibelInkomst = 0;
 
             for (var m = $scope.monthsMin; m <= $scope.monthsMax; m += $scope.monthInterval) {
                 var m0 = m;
@@ -168,7 +168,7 @@ angular.module('sacoForaldraforsakringApp')
                 var spec0 = calculator.inkomstSpec(w0, m0, fm0);
                 var spec1 = calculator.inkomstSpec(w1, m1, fm1);
 
-                var totalNetto = spec0.totalNetto.value + spec1.totalNetto.value;
+                var disponibelInkomst = spec0.disponibelInkomst.value + spec1.disponibelInkomst.value;
                 var FLnetto = spec0.FLnetto.value + spec1.FLnetto.value;
 
                 $scope.data.push({
@@ -177,17 +177,17 @@ angular.module('sacoForaldraforsakringApp')
                     inkomstSpec0: spec0,
                     inkomstSpec1: spec1,
                     x: m,
-                    totalNetto: totalNetto - FLnetto,
+                    disponibelInkomst: disponibelInkomst - FLnetto,
                     FLnetto: FLnetto,
-                    sum: totalNetto
+                    sum: disponibelInkomst
                 });
 
                 /*  Spara maxvärdet lättillgängligt i scopet.
                 */
-                if (totalNetto > $scope.max.totalNetto) {
+                if (disponibelInkomst > $scope.max.disponibelInkomst) {
                     $scope.max = {
                         ledigaManader: [m0, m1],
-                        totalNetto: totalNetto
+                        disponibelInkomst: disponibelInkomst
                     }
                 }
             }

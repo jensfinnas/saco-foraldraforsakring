@@ -8,8 +8,7 @@ app.directive("incomeSpec", function($document) {
         },
         templateUrl: 'templates/income-spec.html',
         link: function(scope, elem, attrs) {
-        	scope.rows = [ 'lonBrutto','FPbrutto','FLbrutto','JB','BB','totalBrutto','totalNetto' ];
-            //scope.fullMode = scope.mode == 'full';
+        	scope.rows = [ 'lonBrutto','FP','FL','JB','BB','disponibelInkomst' ];
         }
     }
 });

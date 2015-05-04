@@ -73,15 +73,15 @@
   <table class="table income-spec">
     <tr>
       <td>Med fördelningen {{parents[0].input.ledigaManader}}+{{parents[1].input.ledigaManader}} månader</td>
-      <td class="text-right">{{ parents[0].inkomstSpec.totalNetto.value + parents[1].inkomstSpec.totalNetto.value | currency:'kr':0 }}</td>
+      <td class="text-right">{{ parents[0].inkomstSpec.disponibelInkomst.value + parents[1].inkomstSpec.disponibelInkomst.value | currency:'kr':0 }}</td>
     </tr>
     <tr>
       <td>Ni maximerar er inkomst med fördelningen {{max.ledigaManader[0]}}+{{max.ledigaManader[1]}} månader</td>
-      <td class="text-right">{{ max.totalNetto | currency:'kr':0 }}</td>
+      <td class="text-right">{{ max.disponibelInkomst | currency:'kr':0 }}</td>
     </tr>
     <tr>
       <td>Skillnad</td>
-      <td class="text-right">{{ parents[0].inkomstSpec.totalNetto.value + parents[1].inkomstSpec.totalNetto.value - max.totalNetto | currency:'kr':0 }}</td>
+      <td class="text-right">{{ parents[0].inkomstSpec.disponibelInkomst.value + parents[1].inkomstSpec.disponibelInkomst.value - max.disponibelInkomst | currency:'kr':0 }}</td>
     </tr> 
   </table>
   <button class="btn btn-default pull-right" ng-click="modal('templates/modal-income-spec.html', { parents: parents, size: 'lg' })">
@@ -97,7 +97,7 @@
   </button>
 </div>
 
-<!--<income-spec parents="parents" mode="full" ng-show="showResults"></income-spec>-->
+<income-spec parents="parents" mode="full" ng-show="showResults"></income-spec>
 
 
 
