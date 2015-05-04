@@ -18,7 +18,7 @@ app.factory('calculator', function () {
     var JBreserveradeManader = 2;
 
     // Barnbidrag per månad
-    var BB = 1050;
+    var BBperManad = 1050;
 
     function getGA(FFI, jobbManader, PBB) {
         var GA;
@@ -52,15 +52,27 @@ app.factory('calculator', function () {
             Math.max(0, ( TI - GA - SG1 ) * 0.2 ) +
             Math.max(0, ( TI - GA - SG2 ) * 0.05 );
     }
-    /*  Räkna ut jobbskatteavdraget (JSA) i kronor givet en arbetsinkomst per månad (AI),
+    /*  Räkna ut jobbskatteavdraget (JSA) i kronor givet en arbetsinkomst (AI),
         kommunal inkomstskatt (KI) och aktuellt prisbasbelop (PBB).
-    */
-    function getJSA (AI, jobbManader, KI, PBB) {
-        // Räkna ut grundavdraget
-        var GA = getGA(AI, jobbManader, PBB);
 
+        OM(
+        B7+B9<=0,91*Prisbasbelopp
+        MAX(0;(B7+B9-B12)*Kommunalskatt)
+
+        OM
+        $B7+B9<=2,94*Prisbasbelopp
+        (0,91*Prisbasbelopp+0,332*(B7+B9-0,91*Prisbasbelopp)-$B12)*Kommunalskatt
+
+        OM(
+        B7+B9<=8,08*Prisbasbelopp
+        (1,584*Prisbasbelopp+0,111*(B7+B9-2,94*Prisbasbelopp)-$B12)*Kommunalskatt
+
+        OM(B7+B9>8,08*Prisbasbelopp
+        (2,155*Prisbasbelopp-$B12)*Kommunalskatt))
+    */
+    function getJSA (AI, GA, KI, PBB) {
         if (AI < 0.91 * PBB) {
-            return (AI - GA) * KI;
+            return Math.max( (AI - GA) * KI, 0);
         }
         else if (AI < 2.94 * PBB) {
             return (0.91 * PBB + 0.332 * ( AI - 0.91 * PBB ) - GA ) * KI;
@@ -87,11 +99,11 @@ app.factory('calculator', function () {
         var FPTak = PBB * 10
         // Om lönen är över inkomsttaket:
         if (lonAr > FPTak) {
-            return 0.8 * 0.97 * ( 10 * PBB / 365 ) * 30;
+            return ( 10 * PBB * 0.97 * 0.8 ) / 365 * 30.4;
         }
         // Om lönen är under inkomsttaket:
         else {
-            return (lonAr * 0.8 * 0.97 ) / 365 * 30;
+            return (lonAr * 0.8 * 0.97 ) / 365 * 30.4;
         }
     }
 
@@ -129,11 +141,14 @@ app.factory('calculator', function () {
         // 1) Månadslön x antal månader + FP per månad x antal månader + FL per månad x antal månader = Total årsinkomst 
         var arsinkomst = lonManad * jobbManader + FP + FL;
 
+        // Grundavdraget som vi använder för att räkna ut JSA
+        var GA = getGA( arsinkomst, 12, PBB );
+
         // 2) Beräkna Total skatt m.h.a. Total årsinkomst.
         var inkomstskatt = getSkatt( arsinkomst, 12 );
 
         // 3) Beräkna JSA med:  ”total årsinkomst  minus föräldrapenning under året”.
-        var JSA = getJSA( arsinkomst - FP, 12, KI, PBB );
+        var JSA = getJSA( (arsinkomst - FP) , GA, KI, PBB );
 
         // 4) Beräkna Slutlig skatt: Total skatt – JSA
         var inkomstskattEfterJSA = inkomstskatt - JSA;
@@ -146,6 +161,7 @@ app.factory('calculator', function () {
         // 6) Disponibel årsinkomst = Nettoinkomst + barnbidrag + jämställdhetsbonus
         // Jämställdhetsbonus
         var JB = getJB(ledigaManader, JBdag, JBreserveradeManader)
+        var BB = BBperManad / 2 * 12;
         var disponibelInkomst = nettoInkomst + BB + JB;
 
         // 7) Beräkna föräldralönsnetto (för visning i graferna)
@@ -170,7 +186,7 @@ app.factory('calculator', function () {
             },
             'FLnetto': {
                 label: 'Föräldralön (efter skatt)',
-                value: FL,
+                value: FLnetto,
                 order: 3.5,
             },
             'arsinkomst': {
@@ -179,8 +195,13 @@ app.factory('calculator', function () {
                 order: 4
             },
             'JSA': {
-                label: 'Jobbskatteavdrag (per månad)',
+                label: 'Jobbskatteavdrag (per år)',
                 value: JSA,
+                order: 5
+            },
+            'GA': {
+                label: 'Grundavdrag (per år)',
+                value: GA,
                 order: 5
             },
             'inkomstskatt': {
@@ -206,7 +227,7 @@ app.factory('calculator', function () {
             },
             'BB': {
                 label: 'Barnbidrag',
-                value: BB / 2 * 12,
+                value: BB,
                 type: 'skattefri',
                 order: 10           
             },
