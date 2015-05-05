@@ -38,12 +38,17 @@ angular.module('sacoForaldraforsakringApp')
     }
 
     $scope.showResults = false;
+    $scope.invalidForm = false;
     $scope.validate = function() {
         if ($scope.forms.userInput.$invalid) {
             $scope.showResults = false;
+            $scope.invalidForm = true;
+            $scope.forms.userInput.w0.$dirty = true;
+            $scope.forms.userInput.w1.$dirty = true;
         }
         else {
             $scope.showResults = true;
+            $scope.invalidForm = false;
             $scope.scrollToAnchor('result-card');
             /*  Chart renders incorrecly (wrong width) when container is hidden.
                 We therefore force a redraw after card has been rendered
@@ -92,10 +97,10 @@ angular.module('sacoForaldraforsakringApp')
             $scope.parents[1].label = 'pappan';
     	}
     	else {
-            $scope.parents[0].icon = 'images/woman.png';
+            $scope.parents[0].icon = 'images/trans.png';
             $scope.parents[0].label = 'förälder ett';
 
-            $scope.parents[1].icon = 'images/woman.png';
+            $scope.parents[1].icon = 'images/trans.png';
             $scope.parents[1].label = 'förälder två';    		
     	}   	
     })
@@ -126,7 +131,8 @@ angular.module('sacoForaldraforsakringApp')
         $timeout(function() {
             $location.hash(id);
             $anchorScroll();
-        }, 100);
+            pym.sendHeight();
+        }, 150);
     }
 
 

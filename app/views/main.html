@@ -1,6 +1,6 @@
 <div id="gender-version" ng-click="settings.hetero=!settings.hetero">
   <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-  <span ng-show="settings.hetero"> Lite mindre heteronormativitet, tack</span>
+  <span ng-show="settings.hetero">Byt till HBTQ-läge</span>
   <span ng-show="!settings.hetero"> Tillbaka till mamma-pappa-läge</span>
 
 </div>
@@ -39,7 +39,7 @@
         ng-show="forms.userInput.w1.$invalid&&forms.userInput.w1.$dirty"role="alert">Ange en månadslön i siffror</div>
     </div>
 
-    <h3>I hur många månader får ni <span class="show-info" ng-click="modal('templates/modal-info.html', {'msg': 'Här kommer en förklaring'})" tooltip="Vad är föräldralön?">föräldralön</span>?</h3>
+    <h3>I hur många månader får ni <span class="show-info" ng-click="modal('templates/modal-info.html', {'msg': 'Föräldralön är den lön som arbetsgivaren betalar som ett tillägg till föräldrapenningen. Regleras i kollektivavtal.'})">föräldralön</span>?</h3>
     <div class="form-group">
       <label for="foraldralon-0">{{ parents[0].label | capitalize }}</label>
       <select class="form-control" ng-model="parents[0].input.foraldralonManader">
@@ -63,7 +63,12 @@
     <h3>Hur vill ni fördela föräldraledigheten under det första året?</h3>
     <month-slider></month-slider>
 
-    <button class="btn btn-saco btn-lg btn-nav" ng-click="validate();">Hur mycket får ni ut?</button>
+    <button class="btn btn-saco btn-lg btn-nav" ng-click="validate();">
+      Hur mycket får ni ut?
+    </button>
+    <div class="error-message"
+        ng-show="invalidForm">Du måste fylla löner för båda föräldrarna</div>
+
   </form>
 </div>
 
@@ -97,7 +102,8 @@
   </button>
 </div>
 
-<income-spec parents="parents" mode="full" ng-show="showResults"></income-spec>
+<!--
+<income-spec parents="parents" mode="full" ng-show="showResults"></income-spec>-->
 
 
 
