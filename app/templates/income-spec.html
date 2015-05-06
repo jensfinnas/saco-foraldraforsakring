@@ -1,6 +1,6 @@
 <!-- Essential report: For  -->
 <div ng-hide="mode=='full'">
-  <h3>{{ parents[0].label | capitalize }}</h3>
+  <h3>{{ parents[0].label | capitalize }} (hemma {{parents[0].input.ledigaManader}} månader)</h3>
   <table class="table income-spec">
     <tr ng-repeat="key in rows">
       <td>{{ parents[0].inkomstSpec[key].label }}</td>
@@ -8,7 +8,7 @@
     </tr>
   </table>
 
-  <h3>{{ parents[1].label | capitalize }}</h3>
+  <h3>{{ parents[1].label | capitalize }} (hemma {{parents[1].input.ledigaManader}} månader)</h3>
   <table class="table income-spec">
     <tr ng-repeat="key in rows">
       <td>{{ parents[1].inkomstSpec[key].label }}</td>

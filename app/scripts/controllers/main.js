@@ -24,14 +24,14 @@ angular.module('sacoForaldraforsakringApp')
     	{
     		input: {
     			lonManad: null,
-    			ledigaManader: 6,
-    			foraldralonManader: 6
+    		    foraldralonManader: 6
     		}
     	},
     	{
     		input: {
     			lonManad: null,
-    			foraldralonManader: 6
+    			foraldralonManader: 6,
+                ledigaManader: 6
     		}
     	}
     ];
@@ -67,8 +67,8 @@ angular.module('sacoForaldraforsakringApp')
     }
     /*	
     */
-    $scope.$watch('parents[0].input.ledigaManader', function(newVal, oldVal) {
-    	$scope.parents[1].input.ledigaManader = 12 - newVal;
+    $scope.$watch('parents[1].input.ledigaManader', function(newVal, oldVal) {
+    	$scope.parents[0].input.ledigaManader = 12 - newVal;
     })
     /*  Om lön eller antalet föräldralönsmånader förändras ritas hela grafiken om.
     */
