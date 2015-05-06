@@ -9,6 +9,10 @@
  */
 angular.module('sacoForaldraforsakringApp')
   .controller('MainCtrl', function ($scope, $modal, $filter, $timeout, $location, $anchorScroll, calculator, chart, pym) {
+    // Last minute hack to fix anchor scroll
+    $location.hash("_");
+
+    // Settings
     $scope.monthsMin = 1;
     $scope.monthsMax = 11;
     $scope.monthInterval = 1;
@@ -37,6 +41,9 @@ angular.module('sacoForaldraforsakringApp')
         disponibelInkomst: 0
     }
 
+    /*  We use a slightly customized validation function, primarliy to 
+        be able to pick right error messagges to show
+    */
     $scope.showResults = false;
     $scope.invalidForm = false;
     $scope.validate = function() {
