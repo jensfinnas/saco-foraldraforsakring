@@ -23,7 +23,7 @@ var app = angular
   ])
   // For Google Anayltics: https://github.com/mgonto/angularytics
   .config(function(AngularyticsProvider) {
-    AngularyticsProvider.setEventHandlers(['Console', 'GoogleUniversal']);
+    AngularyticsProvider.setEventHandlers(['GoogleUniversal']);
   }).run(function(Angularytics) {
     Angularytics.init();
   });
