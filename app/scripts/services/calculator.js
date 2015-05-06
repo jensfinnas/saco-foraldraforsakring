@@ -166,7 +166,7 @@ app.factory('calculator', function () {
 
         // 7) Beräkna föräldralönsnetto (för visning i graferna)
         var skatteprocentMedJSA = inkomstskattEfterJSA / arsinkomst;
-        var FLnetto = FL * skatteprocentMedJSA;
+        var FLnetto = FL * (1 - skatteprocentMedJSA);
 
         var inkomstSpec = {
             'lonBrutto': {
