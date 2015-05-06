@@ -2,18 +2,18 @@
   <div class="parent-0 pull-left">
     <!--<strong>{{ parents[0].label | capitalize }}</strong><br/>-->
     <img ng-src="{{ parents[0].icon }}" class="icon">
-    <span>{{ 12 - parents[0].input.ledigaManader }} mån.</span>
+    <span>{{ parents[0].input.ledigaManader }} mån.</span>
   </div>
   <div class="parent-1 pull-right">
     <!--<strong>{{ parents[1].label | capitalize }}</strong><br/>-->
-    <span>{{ 12 - parents[1].input.ledigaManader }} mån.</span>
+    <span>{{ parents[1].input.ledigaManader }} mån.</span>
     <img ng-src="{{ parents[1].icon }}" class="icon">
   </div>
-  <slider ng-model="parents[0].input.ledigaManader"
+  <slider ng-model="parents[1].input.ledigaManader"
   	min="monthsMin"
   	step="monthInterval"
   	max="monthsMax"
-	value="12-parents[0].input.ledigaManader"
+	value="parents[1].input.ledigaManader"
 	tooltip="{{showTooltip}}"
 	tooltip-trigger="none"
 	></slider>
