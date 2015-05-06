@@ -8,7 +8,7 @@
  * Controller of the sacoForaldraforsakringApp
  */
 angular.module('sacoForaldraforsakringApp')
-  .controller('MainCtrl', function ($scope, $modal, $filter, $timeout, $location, $anchorScroll, calculator, chart, pym) {
+  .controller('MainCtrl', function ($scope, $modal, $filter, $timeout, $location, $anchorScroll, calculator, chart, pym, Angularytics) {
     // Last minute hack to fix anchor scroll
     $location.hash("_");
 
@@ -207,6 +207,14 @@ angular.module('sacoForaldraforsakringApp')
 
             updateFamilyIncome();
             updateChartAxis();
+
+            // Track query in Google Analytics
+            Angularytics.trackEvent("Query", "Wage parent 1", w0);
+            Angularytics.trackEvent("Query", "Wage parent 2", w1);
+            Angularytics.trackEvent("Query", "FL months parent 1", fm0);
+            Angularytics.trackEvent("Query", "FL months parent 2", fm1);
+            Angularytics.trackEvent("Query", "Leave months parent 1", m0);
+            Angularytics.trackEvent("Query", "Leave months parent 2", m1);
         }
     }
   });
