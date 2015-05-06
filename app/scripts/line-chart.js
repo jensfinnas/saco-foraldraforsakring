@@ -498,13 +498,14 @@ mod.factory('n3utils', [
             return '1';
           }
         });
-        item.on('click', function(s, i) {
+        // Disable legend clickablity
+        /*item.on('click', function(s, i) {
           return typeof handlers.onSeriesVisibilityChange === "function" ? handlers.onSeriesVisibilityChange({
             series: s,
             index: i,
             newVisibility: !(s.visible !== false)
           }) : void 0;
-        });
+        });*/
         item.append('circle').attr({
           'fill': function(s) {
             return s.color;
