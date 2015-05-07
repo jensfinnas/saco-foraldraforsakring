@@ -94,7 +94,7 @@
     Så här räknar vi
   </button>
 
-  <linechart id="chart" highlight="parents[0].input.ledigaManader" data="data" options="chartOptions" forceredraw="forceredraw" mode="" width="" height="200"></linechart>
+  <linechart id="chart" highlight="parents[1].input.ledigaManader" data="data" options="chartOptions" forceredraw="forceredraw" mode="" width="" height="200"></linechart>
   <month-slider style="padding-left:{{chartOptions.dimensions.left}}px;padding-right:{{chartOptions.dimensions.right}}px;"></month-slider>
 
   <button class="btn btn-saco btn-lg btn-nav" ng-click="scrollToAnchor('user-input-card') | trackEvent:'Results':'Click' : 'Back'">
