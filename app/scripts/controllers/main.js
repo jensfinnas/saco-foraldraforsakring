@@ -175,8 +175,8 @@ angular.module('sacoForaldraforsakringApp')
             $scope.max.disponibelInkomst = 0;
 
             for (var m = $scope.monthsMin; m <= $scope.monthsMax; m += $scope.monthInterval) {
-                var m0 = m;
-                var m1 = 12 - m;
+                var m0 = 12 - m;
+                var m1 = m;
 
                 var spec0 = calculator.inkomstSpec(w0, m0, fm0);
                 var spec1 = calculator.inkomstSpec(w1, m1, fm1);
@@ -204,6 +204,7 @@ angular.module('sacoForaldraforsakringApp')
                     }
                 }
             }
+            $scope.data = $scope.data.sort(function(a, b){ return d3.descending(a.m0, b.m0); })
 
             updateFamilyIncome();
             updateChartAxis();
