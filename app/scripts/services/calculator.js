@@ -5,17 +5,17 @@ app.factory('calculator', function () {
     */
 
     // Prisbasbelopp
-    var PBB = 44500;
+    var PBB = 44300;
     // Kommunal inkomstskatt
     var KI = .3199;
 
     // Skiktgränser för statlig inkomstskatt
     var SG1 = 430200;
-    var SG2 = 616100;
+    var SG2 = 625800;
 
     // Jämstäldhetsbonus per dag
     var JBdag = 50;
-    var JBreserveradeManader = 2;
+    var JBreserveradeManader = 3;
 
     // Barnbidrag per månad
     var BBperManad = 1050;
@@ -80,17 +80,12 @@ app.factory('calculator', function () {
         else if (AI < 8.08 * PBB) {
             return (1.584 * PBB + 0.111 * ( AI - 2.94 * PBB ) - GA ) * KI;
         }
-        else {
-            return ( 2.155 * PBB - GA ) * KI;
-        }
-
-        /* Så här hade vi räknat om den tänkta budgeten gått igenom och JSA börjat fasas ut
-        else if (AI < 13.48 * PBB) {
+        else if (AI < 13.54 * PBB) {
             return ( 2.155 * PBB - GA ) * KI;
         }
         else {
             return Math.max( 0, 2.155 * PBB - GA ) * KI - 0.03 * ( AI - 13.84 * PBB );
-        }*/
+        }
     }
     /*  Räkna ut föräldrapenningen (FP) per månad givet en månadslön och det aktuella prisbasbeloppet (PBB).
     */
