@@ -7,7 +7,7 @@ app.factory('calculator', function () {
     // Prisbasbelopp
     var PBB = 44300;
     // Kommunal inkomstskatt
-    var KI = .3199;
+    var KI = .3210;
 
     // Skiktgränser för statlig inkomstskatt
     var SG1 = 430200;

@@ -13,8 +13,8 @@ angular.module('sacoForaldraforsakringApp')
     $location.hash("_");
 
     // Settings
-    $scope.monthsMin = 1;
-    $scope.monthsMax = 11;
+    $scope.monthsMin = 2;
+    $scope.monthsMax = 10;
     $scope.monthInterval = 1;
     var formatCurrency = $filter('currency');
 
