@@ -8,7 +8,7 @@ app.directive("incomeSpec", function($document) {
         },
         templateUrl: 'templates/income-spec.html',
         link: function(scope, elem, attrs) {
-        	scope.rows = [ 'lonBrutto','FP','FL','JB','BB','disponibelInkomst' ];
+        	scope.rows = [ 'lonBrutto','FP','FL','BB','disponibelInkomst' ];
         }
     }
 });

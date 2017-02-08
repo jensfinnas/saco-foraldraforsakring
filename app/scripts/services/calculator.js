@@ -5,17 +5,13 @@ app.factory('calculator', function () {
     */
 
     // Prisbasbelopp
-    var PBB = 44300;
+    var PBB = 44800;
     // Kommunal inkomstskatt
-    var KI = .3210;
+    var KI = .3212;
 
     // Skiktgränser för statlig inkomstskatt
-    var SG1 = 430200;
-    var SG2 = 625800;
-
-    // Jämstäldhetsbonus per dag
-    var JBdag = 50;
-    var JBreserveradeManader = 3;
+    var SG1 = 438900;
+    var SG2 = 638500;
 
     // Barnbidrag per månad
     var BBperManad = 1050;
@@ -84,7 +80,7 @@ app.factory('calculator', function () {
             return ( 2.155 * PBB - GA ) * KI;
         }
         else {
-            return Math.max( 0, 2.155 * PBB - GA ) * KI - 0.03 * ( AI - 13.84 * PBB );
+            return Math.max( 0, 2.155 * PBB - GA ) * KI - 0.03 * ( AI - 13.54 * PBB );
         }
     }
     /*  Räkna ut föräldrapenningen (FP) per månad givet en månadslön och det aktuella prisbasbeloppet (PBB).
@@ -117,11 +113,12 @@ app.factory('calculator', function () {
         }
     }
 
+    /* Jämställdhetsbonusen avskaffades 2017, men behåller funktionen ett tag till
     function getJB(ledigaManader, JBdag, JBreserveradeManader) {
         // Antal månader som berättigar till JB
         var manader = Math.min(ledigaManader, 12 - ledigaManader) - JBreserveradeManader;
         return Math.max(manader, 0) * 30 * JBdag;
-    }
+    }*/
 
     service.inkomstSpec = function(lonManad, ledigaManader, foraldralonManaderMax) {
         var jobbManader = 12 - ledigaManader;
@@ -154,10 +151,8 @@ app.factory('calculator', function () {
         var nettoInkomst = arsinkomst - inkomstskattEfterJSA;
 
         // 6) Disponibel årsinkomst = Nettoinkomst + barnbidrag + jämställdhetsbonus
-        // Jämställdhetsbonus
-        var JB = getJB(ledigaManader, JBdag, JBreserveradeManader)
         var BB = BBperManad / 2 * 12;
-        var disponibelInkomst = nettoInkomst + BB + JB;
+        var disponibelInkomst = nettoInkomst + BB;
 
         // 7) Beräkna föräldralönsnetto (för visning i graferna)
         var skatteprocentMedJSA = inkomstskattEfterJSA / arsinkomst;
@@ -214,22 +209,16 @@ app.factory('calculator', function () {
                 value: nettoInkomst,
                 order: 8
             },
-            'JB': {
-                label: 'Jämställdhetsbonus',
-                value: JB,
-                type: 'skattefri',
-                order: 9
-            },
             'BB': {
                 label: 'Barnbidrag',
                 value: BB,
                 type: 'skattefri',
-                order: 10           
+                order: 9           
             },
             'disponibelInkomst': {
                 label: 'Disponibel inkomst',
                 value: disponibelInkomst,
-                order: 11                
+                order: 10                
             }
         }
         /*angular.forEach(inkomstSpec, function(d, key) {
