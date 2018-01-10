@@ -1,17 +1,17 @@
 app.factory('calculator', function () {
     var service = {};
-    /*  Räkna ut grundavdraget i kronor givet en förvärvsinkomst (FFI), dvs månadslön, och 
-        aktuellt prisbasbelopp (PBB). 
+    /*  Räkna ut grundavdraget i kronor givet en förvärvsinkomst (FFI), dvs månadslön, och
+        aktuellt prisbasbelopp (PBB).
     */
 
     // Prisbasbelopp
-    var PBB = 44800;
-    // Kommunal inkomstskatt
+    var PBB = 45500;
+    // Genomsnittlig kommunal inkomstskatt
     var KI = .3212;
 
     // Skiktgränser för statlig inkomstskatt
-    var SG1 = 438900;
-    var SG2 = 638500;
+    var SG1 = 455300;  // Nedre skiktgräns
+    var SG2 = 662300; // Övre skiktgräns
 
     // Barnbidrag per månad
     var BBperManad = 1050;
@@ -105,7 +105,7 @@ app.factory('calculator', function () {
         var FPTak = PBB * 10;
         // Om lönen är över inkomsttaket:
         if (lonAr > FPTak) {
-            return lonManad - 30 * 0.8 * 10 * PBB / 365 - 30 * 0.1 * lonAr / 365; 
+            return lonManad - 30 * 0.8 * 10 * PBB / 365 - 30 * 0.1 * lonAr / 365;
         }
         // Om lönen är under inkomsttaket:
         else {
@@ -129,8 +129,8 @@ app.factory('calculator', function () {
 
         // Total föräldralön före skatt
         var FL = getFL( lonManad, PBB ) * foraldralonManader;
-        
-        // 1) Månadslön x antal månader + FP per månad x antal månader + FL per månad x antal månader = Total årsinkomst 
+
+        // 1) Månadslön x antal månader + FP per månad x antal månader + FL per månad x antal månader = Total årsinkomst
         var arsinkomst = lonManad * jobbManader + FP + FL;
 
         // Grundavdraget som vi använder för att räkna ut JSA
@@ -213,12 +213,12 @@ app.factory('calculator', function () {
                 label: 'Barnbidrag',
                 value: BB,
                 type: 'skattefri',
-                order: 9           
+                order: 9
             },
             'disponibelInkomst': {
                 label: 'Disponibel inkomst',
                 value: disponibelInkomst,
-                order: 10                
+                order: 10
             }
         }
         /*angular.forEach(inkomstSpec, function(d, key) {
@@ -230,11 +230,11 @@ app.factory('calculator', function () {
             }
             if (d.type == 'skattefri') {
                 inkomstSpec.totalNetto.value += d.value;
-                inkomstSpec.totalBrutto.value += d.value;               
+                inkomstSpec.totalBrutto.value += d.value;
             }
         });*/
         return inkomstSpec;
-            
+
     }
 
     return service;
