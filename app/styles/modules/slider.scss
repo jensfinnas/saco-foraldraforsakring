@@ -1,3 +1,5 @@
+@import "../_variables";
+
 month-slider {
 	display: block;
 
@@ -6,7 +8,7 @@ month-slider {
 		background-color: #fff;
 		background-image: none;
 	}
-	
+
 	$slider-height: 6px;
 	.slider.slider-horizontal {
 		height: $slider-height;
