@@ -19,7 +19,6 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // bower:js
-      'bower_components/modernizr/modernizr.js',
       'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
       'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
@@ -28,8 +27,7 @@ module.exports = function(config) {
       'bower_components/angular-resource/angular-resource.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
-      'bower_components/bootstrap/dist/js/bootstrap.js',
-      'bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js',
+      'bower_components/seiyria-bootstrap-slider/dist/bootstrap-slider.js',
       'bower_components/angular-bootstrap-slider/slider.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/angular-toArrayFilter/toArrayFilter.js',
