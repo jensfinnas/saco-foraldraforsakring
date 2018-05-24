@@ -14,7 +14,7 @@ app.factory('calculator', function () {
     var SG2 = 662300; // Övre skiktgräns
 
     // Barnbidrag per månad
-    var BBperManad = 1050;
+    var BBperManad = 1250;
 
     function getGA(FFI, jobbManader, PBB) {
         var GA;
