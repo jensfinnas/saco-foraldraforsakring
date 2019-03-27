@@ -5,13 +5,13 @@ app.factory('calculator', function () {
     */
 
     // Prisbasbelopp
-    var PBB = 45500;
+    var PBB = 46500;
     // Genomsnittlig kommunal inkomstskatt
-    var KI = .3212;
+    var KI = .3219;
 
     // Skiktgränser för statlig inkomstskatt
-    var SG1 = 455300;  // Nedre skiktgräns
-    var SG2 = 662300; // Övre skiktgräns
+    var SG1 = 490700;  // Nedre skiktgräns
+    var SG2 = 689300; // Övre skiktgräns
 
     // Barnbidrag per månad
     var BBperManad = 1250;
@@ -70,17 +70,17 @@ app.factory('calculator', function () {
         if (AI < 0.91 * PBB) {
             return Math.max( (AI - GA) * KI, 0);
         }
-        else if (AI < 2.94 * PBB) {
-            return (0.91 * PBB + 0.332 * ( AI - 0.91 * PBB ) - GA ) * KI;
+        else if (AI < 3.24 * PBB) {
+            return (0.91 * PBB + 0.3405 * ( AI - 0.91 * PBB ) - GA ) * KI;
         }
         else if (AI < 8.08 * PBB) {
-            return (1.584 * PBB + 0.111 * ( AI - 2.94 * PBB ) - GA ) * KI;
+            return (1.703 * PBB + 0.128 * ( AI - 3.24 * PBB ) - GA ) * KI;
         }
         else if (AI < 13.54 * PBB) {
-            return ( 2.155 * PBB - GA ) * KI;
+            return ( 2.323 * PBB - GA ) * KI;
         }
         else {
-            return Math.max( 0, 2.155 * PBB - GA ) * KI - 0.03 * ( AI - 13.54 * PBB );
+            return Math.max( 0, 2.323 * PBB - GA ) * KI - 0.03 * ( AI - 13.54 * PBB );
         }
     }
     /*  Räkna ut föräldrapenningen (FP) per månad givet en månadslön och det aktuella prisbasbeloppet (PBB).
