@@ -5,13 +5,13 @@ app.factory('calculator', function () {
     */
 
     // Prisbasbelopp
-    var PBB = 46500;
+    var PBB = 47300;
     // Genomsnittlig kommunal inkomstskatt
-    var KI = .3219;
+    var KI = .3228;
 
     // Skiktgränser för statlig inkomstskatt
-    var SG1 = 490700;  // Nedre skiktgräns
-    var SG2 = 689300; // Övre skiktgräns
+    var SG1 = 509300;  // Nedre skiktgräns
+    var SG2 = null; // Övre skiktgräns
 
     // Barnbidrag per månad
     var BBperManad = 1250;
@@ -45,8 +45,7 @@ app.factory('calculator', function () {
         var GA = getGA( TI, jobbManader, PBB );
 
         return ( TI - GA ) * KI +
-            Math.max(0, ( TI - GA - SG1 ) * 0.2 ) +
-            Math.max(0, ( TI - GA - SG2 ) * 0.05 );
+            Math.max(0, ( TI - GA - SG1 ) * 0.2 );
     }
     /*  Räkna ut jobbskatteavdraget (JSA) i kronor givet en arbetsinkomst (AI),
         kommunal inkomstskatt (KI) och aktuellt prisbasbelop (PBB).
