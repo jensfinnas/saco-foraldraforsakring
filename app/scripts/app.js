@@ -19,11 +19,12 @@ var app = angular
     'ui.bootstrap-slider',
     'angular-toArrayFilter',
     'n3-line-chart',
-    'angularytics'
+    //'angularytics'
   ])
+  /*
   // For Google Anayltics: https://github.com/mgonto/angularytics
   .config(function(AngularyticsProvider) {
     AngularyticsProvider.setEventHandlers(['GoogleUniversal']);
   }).run(function(Angularytics) {
     Angularytics.init();
-  });
+  });*/

@@ -8,7 +8,7 @@
  * Controller of the sacoForaldraforsakringApp
  */
 angular.module('sacoForaldraforsakringApp')
-  .controller('MainCtrl', function ($scope, $modal, $filter, $timeout, $location, $anchorScroll, calculator, chart, pym, Angularytics) {
+  .controller('MainCtrl', function ($scope, $modal, $filter, $timeout, $location, $anchorScroll, calculator, chart, pym) {
     // Last minute hack to fix anchor scroll
     $location.hash("_");
 
@@ -41,7 +41,7 @@ angular.module('sacoForaldraforsakringApp')
         disponibelInkomst: 0
     }
 
-    /*  We use a slightly customized validation function, primarliy to 
+    /*  We use a slightly customized validation function, primarliy to
         be able to pick right error messagges to show
     */
     $scope.showResults = false;
@@ -63,9 +63,9 @@ angular.module('sacoForaldraforsakringApp')
             $timeout(function() {
                 $scope.$broadcast('redraw-chart');
             })
-        }  
+        }
     }
-    /*	
+    /*
     */
     $scope.$watch('parents[1].input.ledigaManader', function(newVal, oldVal) {
     	$scope.parents[0].input.ledigaManader = 12 - newVal;
@@ -108,8 +108,8 @@ angular.module('sacoForaldraforsakringApp')
             $scope.parents[0].label = 'förälder ett';
 
             $scope.parents[1].icon = 'images/trans.png';
-            $scope.parents[1].label = 'förälder två';    		
-    	}   	
+            $scope.parents[1].label = 'förälder två';
+    	}
     })
 
     $scope.modal = function (templateUrl, params) {
@@ -126,7 +126,7 @@ angular.module('sacoForaldraforsakringApp')
         });
     };
 
-    
+
     $scope.sendHeight = function() {
         pym.sendHeight();
     }
@@ -156,13 +156,13 @@ angular.module('sacoForaldraforsakringApp')
             $scope.parents[0].inkomstSpec = row.inkomstSpec0;
             $scope.parents[1].inkomstSpec = row.inkomstSpec1;
         }
-    }  
+    }
     function updateChartAxis() {
         $scope.chartOptions.axes.y.min = d3.min($scope.data.map(function(d) {
             return d.disponibelInkomst * 0.9;
         }));
     }
- 
+
     function updateChartData() {
         if ($scope.forms.userInput.$valid) {
             var w0 = $scope.parents[0].input.lonManad;
@@ -210,12 +210,14 @@ angular.module('sacoForaldraforsakringApp')
             updateChartAxis();
 
             // Track query in Google Analytics
+            /*
             Angularytics.trackEvent("Query", "Wage parent 1", w0);
             Angularytics.trackEvent("Query", "Wage parent 2", w1);
             Angularytics.trackEvent("Query", "FL months parent 1", fm0);
             Angularytics.trackEvent("Query", "FL months parent 2", fm1);
             Angularytics.trackEvent("Query", "Leave months parent 1", m0);
             Angularytics.trackEvent("Query", "Leave months parent 2", m1);
+            */
         }
     }
   });

@@ -1,4 +1,4 @@
-<div id="gender-version" ng-click="settings.hetero=!settings.hetero | trackEvent:'User input':'Click' : 'HBTQ mode'">
+<div id="gender-version" ng-click="settings.hetero=!settings.hetero">
   <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
   <span ng-show="settings.hetero">Byt till HBTQ-läge</span>
   <span ng-show="!settings.hetero"> Tillbaka till mamma-pappa-läge</span>
@@ -66,7 +66,7 @@
     <h3>Hur vill ni fördela föräldraledigheten under det första året?</h3>
     <month-slider></month-slider>
 
-    <button class="btn btn-saco btn-lg btn-nav" ng-click="validate() | trackEvent:'User input':'Click' : 'Show results'">
+    <button class="btn btn-saco btn-lg btn-nav" ng-click="validate()">
       Hur mycket får ni ut?
     </button>
     <div class="error-message"
@@ -92,7 +92,7 @@
       <td class="text-right">{{ parents[0].inkomstSpec.disponibelInkomst.value + parents[1].inkomstSpec.disponibelInkomst.value - max.disponibelInkomst | currency:'kr':0 }}</td>
     </tr>
   </table>
-  <button class="btn btn-default pull-right" ng-click="modal('templates/modal-income-spec.html', { parents: parents, size: 'lg' }) | trackEvent:'Results':'Click' : 'Back'">
+  <button class="btn btn-default pull-right" ng-click="modal('templates/modal-income-spec.html', { parents: parents, size: 'lg' })">
     <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
     Så här räknar vi
   </button>
@@ -100,7 +100,7 @@
   <linechart id="chart" highlight="parents[1].input.ledigaManader" data="data" options="chartOptions" forceredraw="forceredraw" mode="" width="" height="200"></linechart>
   <month-slider style="padding-left:{{chartOptions.dimensions.left}}px;padding-right:{{chartOptions.dimensions.right}}px;"></month-slider>
 
-  <button class="btn btn-saco btn-lg btn-nav" ng-click="scrollToAnchor('user-input-card') | trackEvent:'Results':'Click' : 'Back'">
+  <button class="btn btn-saco btn-lg btn-nav" ng-click="scrollToAnchor('user-input-card')">
     <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span> Tillbaka
   </button>
 </div>
