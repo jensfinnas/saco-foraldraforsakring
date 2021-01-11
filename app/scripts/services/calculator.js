@@ -5,12 +5,12 @@ app.factory('calculator', function () {
     */
 
     // Prisbasbelopp
-    var PBB = 47300;
+    var PBB = 47600;
     // Genomsnittlig kommunal inkomstskatt
-    var KI = .3228;
+    var KI = .3227;
 
     // Skiktgränser för statlig inkomstskatt
-    var SG1 = 509300;  // Nedre skiktgräns
+    var SG1 = 523200;  // Nedre skiktgräns
     var SG2 = null; // Övre skiktgräns
 
     // Barnbidrag per månad
@@ -112,6 +112,20 @@ app.factory('calculator', function () {
         }
     }
 
+    /*
+    */
+    function getForvarvsAvdrag(BFA) {
+      if (BFA < 40000) {
+        return 0
+      }
+      else if (BFA <= 240000) {
+        return 0.0075 * (BFI - 40000)
+      }
+      else {
+        return 1500
+      }
+    }
+
     /* Jämställdhetsbonusen avskaffades 2017, men behåller funktionen ett tag till
     function getJB(ledigaManader, JBdag, JBreserveradeManader) {
         // Antal månader som berättigar till JB
@@ -129,33 +143,35 @@ app.factory('calculator', function () {
         // Total föräldralön före skatt
         var FL = getFL( lonManad, PBB ) * foraldralonManader;
 
-        // 1) Månadslön x antal månader + FP per månad x antal månader + FL per månad x antal månader = Total årsinkomst
-        var arsinkomst = lonManad * jobbManader + FP + FL;
 
-        // Grundavdraget som vi använder för att räkna ut JSA
-        var GA = getGA( arsinkomst, 12, PBB );
+        // 1) Månadslön x antal månader + FP per månad x antal månader + FL per månad x antal månader = Total årsinkomst
+        var BFI = lonManad * jobbManader + FP + FL;
+
 
         // 2) Beräkna Total skatt m.h.a. Total årsinkomst.
-        var inkomstskatt = getSkatt( arsinkomst, 12 );
+        var inkomstskatt = getSkatt( BFI, 12 );
 
         // 3) Beräkna JSA med:  ”total årsinkomst  minus föräldrapenning under året”.
-        var JSA = getJSA( (arsinkomst - FP) , GA, KI, PBB );
+        // För att räkna ut JSA behöver vi vet grundavdraget
+        var GA = getGA( BFI, 12, PBB );
+        var JSA = getJSA( (BFI - FP) , GA, KI, PBB );
 
-        // 4) Beräkna Slutlig skatt: Total skatt – JSA
-        var inkomstskattEfterJSA = inkomstskatt - JSA;
+        // 4) Beräkna förvärvsavdrag (introducerades 2021)
+        var forvarvsAvdrag = getForvarvsAvdrag(BFI)
 
-        //var skatteprocentUtanJSA = inkomstskatt / arsinkomst;
+        // 5) Beräkna Slutlig skatt: Total skatt – JSA – förvärvsavdrag
+        var inkomstskattEfterAvdrag = inkomstskatt - JSA - forvarvsAvdrag;
 
-        // 5) Beräkna Nettoinkomst: Total årsinkomst – Slutlig skatt
-        var nettoInkomst = arsinkomst - inkomstskattEfterJSA;
+        // 6) Beräkna Nettoinkomst: Total årsinkomst – Slutlig skatt
+        var nettoInkomst = BFI - inkomstskattEfterAvdrag;
 
-        // 6) Disponibel årsinkomst = Nettoinkomst + barnbidrag + jämställdhetsbonus
+        // 7) Disponibel årsinkomst = Nettoinkomst + barnbidrag + jämställdhetsbonus
         var BB = BBperManad / 2 * 12;
         var disponibelInkomst = nettoInkomst + BB;
 
-        // 7) Beräkna föräldralönsnetto (för visning i graferna)
-        var skatteprocentMedJSA = inkomstskattEfterJSA / arsinkomst;
-        var FLnetto = FL * (1 - skatteprocentMedJSA);
+        // 8) Beräkna föräldralönsnetto (för visning i graferna)
+        var skatteprocentMedAvrag = inkomstskattEfterAvdrag / BFI;
+        var FLnetto = FL * (1 - skatteprocentMedAvrag);
 
         var inkomstSpec = {
             'lonBrutto': {
@@ -178,9 +194,9 @@ app.factory('calculator', function () {
                 value: FLnetto,
                 order: 3.5,
             },
-            'arsinkomst': {
+            'BFI': {
                 label: 'Årsinkomst (före skatt)',
-                value: arsinkomst,
+                value: BFI,
                 order: 4
             },
             'JSA': {
@@ -198,9 +214,9 @@ app.factory('calculator', function () {
                 value: inkomstskatt,
                 order: 6,
             },
-            'inkomstskattEfterJSA': {
-                label: 'Inkomstskatt efter JSA',
-                value: inkomstskattEfterJSA,
+            'inkomstskattEfterAvdrag': {
+                label: 'Inkomstskatt efter avdrag',
+                value: inkomstskattEfterAvdrag,
                 order: 7,
             },
             'nettoInkomst': {
