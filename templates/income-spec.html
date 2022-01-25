@@ -1,6 +1,6 @@
 <!-- Essential report: For  -->
 <div ng-hide="mode=='full'">
-  <h3>{{ parents[0].label | capitalize }} (hemma {{parents[0].input.ledigaManader}} månader)</h3>
+  <h3>{{ parents[0].label | capitalize }} <small>(hemma {{parents[0].input.ledigaManader}} månader)</small></h3>
   <table class="table income-spec">
     <tr ng-repeat="key in rows">
       <td>{{ parents[0].inkomstSpec[key].label }}</td>
@@ -8,7 +8,7 @@
     </tr>
   </table>
 
-  <h3>{{ parents[1].label | capitalize }} (hemma {{parents[1].input.ledigaManader}} månader)</h3>
+  <h3>{{ parents[1].label | capitalize }} <small>(hemma {{parents[1].input.ledigaManader}} månader)</small></h3>
   <table class="table income-spec">
     <tr ng-repeat="key in rows">
       <td>{{ parents[1].inkomstSpec[key].label }}</td>
@@ -31,6 +31,10 @@
       <td class="text-right">{{ parents[0].inkomstSpec.disponibelInkomst.value + parents[1].inkomstSpec.disponibelInkomst.value | currency:'kr': 0 }}</td>
     </tr>
   </table>
+
+  <div class="small">
+    *) Efter public service- och begravningsavgift.
+  </div>
 </div>
 
 <!-- Full report: Primarily for development and debuggig -->
